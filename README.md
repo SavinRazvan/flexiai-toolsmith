@@ -110,7 +110,7 @@
 
 ## Prerequisites
 
-* **Python 3.10+**
+* **Python 3.13+**
 * **Redis** (if you enable `redis` in `ACTIVE_CHANNELS`)
 * **Conda** (Miniconda/Anaconda) *or* **pip** for dependency management
 
