@@ -68,7 +68,7 @@
     - `data_transformation_operations`, `chart_operations`  
   - **Security Audits**  
     - `security_audit` (reconnaissance, process listing, port/network scan, defense actions, system updates)  
-  - **Web Forms**  
+  - **Web Forms** (Experimental)
     - `/submit_user_info` endpoint, persisting submissions to CSV  
   - **OCR (coming soon)**  
     - Placeholder at `flexiai/toolsmith/_recycle/OCR.py`
