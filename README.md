@@ -1,13 +1,16 @@
+
+
 # FlexiAI Toolsmith
 
-**FlexiAI Toolsmith** is a flexible, multi-channel framework for building AI-powered chat assistants. It supports both CLI and web (Quart + SSE) interfaces, integrates with multiple AI providers (OpenAI, Azure OpenAI, DeepSeek, Qwen, GitHub Azure Inference), and lets you wire in rich “tools” (CSV/spreadsheets, security audits, YouTube embeds, web forms—and soon OCR).
+**FlexiAI Toolsmith** is a flexible, multi-channel Python framework for building AI-powered chat assistants. It supports both CLI and web (Quart + SSE) interfaces, integrates with multiple AI providers via the OpenAI Python SDK, and enables assistants to invoke powerful tool plug-ins—including CSV/spreadsheet processing, YouTube search, security audits, dynamic forms, and (soon) OCR.
 
-
-> **Note:**
+> **Provider Support Overview**
 >
-> * **OpenAI** and **Azure OpenAI** already provide the full Assistant-API (threads, streaming deltas, tool calls).
-> * **DeepSeek** and **Qwen** currently use the OpenAI-compatible chat SDK for basic completions; once they expose the Assistant-API through that SDK, FlexiAI Toolsmith will immediately support their threads, streaming deltas, and tool calls too.
-> * **GitHub Azure Inference** remains limited to basic chat completions.
+> * ✅ **OpenAI** and **Azure OpenAI** — full Assistant-API support (threads, streaming deltas, tool calls)
+> * 🟡 **DeepSeek** and **Qwen** — use the OpenAI Python SDK but currently expose **only basic chat completions**
+> * ❌ **GitHub Azure Inference** — limited to basic chat completions
+>
+> ⚙️ When Assistant-API support is added to any SDK-backed provider (e.g., DeepSeek or Qwen), FlexiAI Toolsmith will support it immediately with no code changes.
 
 
 ---
@@ -20,9 +23,10 @@
 4. [Installation](#installation)
 5. [Configuration](#configuration)
 6. [Usage](#usage)
-    1. [CLI Chat (WSL)](#cli-chat-wsl)
-    2. [Web Chat (Quart + SSE)](#web-chat-quart--sse)
-    3. [Submitting User Info (Web Forms)](#submitting-user-info-web-forms)
+
+   * [CLI Chat](#cli-chat-wsl)
+   * [Web Chat (Quart + SSE)](#web-chat-quart--sse)
+   * [Dynamic Web Forms](#dynamic-web-forms)
 7. [Contributing](#contributing)
 8. [License](#license)
 
@@ -30,53 +34,76 @@
 
 ## Features
 
-- **Multi-Channel Publishing**  
-  Fan-out chat events to:
-  - **CLI** (`CLIChannel`)  
-  - **Redis Pub/Sub** (`RedisChannel`)  
-  - **SSE web clients** via Quart (`QuartChannel` + `SSEManager`)
+### Multi-Channel Publishing
 
-- **AI Provider Support**  
-  - **OpenAI & Azure OpenAI**: full Assistant-API (threads, streaming deltas, tool calls)  
-  - **DeepSeek & Qwen**: OpenAI-compatible basic chat (Assistant-API planned)  
-  - **GitHub Azure Inference**: basic chat completions only
+Chat events can be streamed to:
 
-- **Streaming Assistant API**  
-  - Thread lifecycle management (create, queue, in-progress, complete)  
-  - Run & message events routed through an in-memory `EventBus` and `EventDispatcher`  
-  - Partial “delta” message streaming via `MessageDeltaEvent`
+* **CLI** (`CLIChannel`)
+* **Redis Pub/Sub** (`RedisChannel`)
+* **SSE Web Clients** via Quart (`QuartChannel` + `SSEManager`)
 
-- **Pluggable Tool Suite**  
-  - **Retrieval-Augmented Generation (RAG)**  
-    - `save_processed_content` / `load_processed_content`  
-  - **Assistant Orchestration**  
-    - `initialize_agent` / `communicate_with_assistant`  
-  - **YouTube Search**  
-    - `search_youtube` (opens browser)  
-    - `search_on_youtube` (embeddable HTML snippets)  
-  - **Product Filtering**  
-    - `filter_products` (registered as `ai_custom_products`)  
-  - **CSV Operations**  
-    - `csv_operations` (CRUD via `csv_entrypoint`)  
-  - **Subscriber Management**  
-    - `identify_subscriber`, `retrieve_billing_details`, `manage_services`  
-  - **Spreadsheet Operations**  
-    - `file_operations`, `sheet_operations`  
-    - `data_entry_operations`, `data_retrieval_operations`  
-    - `data_analysis_operations`, `formula_operations`  
-    - `formatting_operations`, `data_validation_operations`  
-    - `data_transformation_operations`, `chart_operations`  
-  - **Security Audits**  
-    - `security_audit` (reconnaissance, process listing, port/network scan, defense actions, system updates)  
-  - **Web Forms** (Experimental)
-    - `/submit_user_info` endpoint, persisting submissions to CSV  
-  - **OCR (coming soon)**  
-    - Placeholder at `flexiai/toolsmith/_recycle/OCR.py`
+### AI Provider Support
 
-- **Configurable & Extensible**  
-  - Pydantic-backed `.env` settings for channels, credentials, logging, etc.  
-  - Modular factories for channels, credentials, event handlers, and tools  
-  - Structured logging with rotating file and console handlers  
+* **OpenAI & Azure OpenAI**: full Assistant-API support (threads, deltas, tool calls)
+* **DeepSeek & Qwen**: basic chat completions via OpenAI SDK (Assistant-API pending provider-side)
+* **GitHub Azure Inference**: basic chat completions only
+
+### Streaming Assistant API
+
+* Thread lifecycle management (create, queue, in-progress, complete)
+* Event routing via an in-memory `EventBus` and `EventDispatcher`
+* Delta-based message streaming using `MessageDeltaEvent`
+
+### Dynamic RAG & Multi-Agent Tool Orchestration (via Toolsmith)
+
+Toolsmith enables AI assistants to **invoke dynamic tools via tool calls**, forming a hybrid RAG + MAS system:
+
+* **Persistent Content & Memory**
+
+  * `save_processed_content` / `load_processed_content`
+* **Agent Coordination & Delegation**
+
+  * `initialize_agent` / `communicate_with_assistant`
+
+This architecture supports agent-to-agent delegation, live retrieval from external systems, and operational workflows (beyond document search).
+
+### Built-in Tool Plug-ins
+
+* **YouTube Search**
+
+  * `search_youtube` (opens browser)
+  * `search_on_youtube` (returns embeddable HTML)
+* **Product Filtering**
+
+  * `filter_products` (registered as `ai_custom_products`)
+* **CSV Operations**
+
+  * `csv_operations` (CRUD via `csv_entrypoint`)
+* **Subscriber Management**
+
+  * `identify_subscriber`, `retrieve_billing_details`, `manage_services`
+* **Spreadsheet Operations**
+
+  * `file_operations`, `sheet_operations`
+  * `data_entry_operations`, `data_retrieval_operations`
+  * `data_analysis_operations`, `formula_operations`
+  * `formatting_operations`, `data_validation_operations`
+  * `data_transformation_operations`, `chart_operations`
+* **Security Audits**
+
+  * `security_audit` (recon, port scans, defenses, system updates)
+* **Web Forms (Experimental)**
+
+  * POST endpoint `/submit_user_info`, persists entries to CSV
+* **OCR (Coming Soon)**
+
+  * Placeholder at `flexiai/toolsmith/_recycle/OCR.py`
+
+### Configurable & Extensible
+
+* Pydantic-based `.env` configuration for credentials, channels, logging, etc.
+* Modular factories for channels, credentials, event handlers, and tools
+* Structured logging with rotating file and console support
 
 ---
 
@@ -111,28 +138,28 @@
 ## Prerequisites
 
 * **Python 3.12+**
-* **Redis** (if you enable `redis` in `ACTIVE_CHANNELS`)
-* **Conda** (Miniconda/Anaconda) *or* **pip** for dependency management
+* **Redis** (required if using `redis` in `ACTIVE_CHANNELS`)
+* **Conda** (Miniconda/Anaconda) *or* `pip` + `venv`
 
 ---
 
 ## Installation
 
-1. **Clone** the repository:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/your-username/flexiai-toolsmith.git
    cd flexiai-toolsmith
    ```
 
-2. **Create** the Conda environment (recommended):
+2. **Set up the environment (Conda recommended):**
 
    ```bash
    conda env create -f environment_full.yml
    conda activate .conda_flexiai
    ```
 
-   *or*, install via **pip** in a venv:
+   *Or set up a `venv` and install via pip:*
 
    ```bash
    python3 -m venv .venv
@@ -144,30 +171,33 @@
 
 ## Configuration
 
-Copy `.env.template` to `.env` and set:
+Copy `.env.template` to `.env`, then set:
 
-| Variable                       | Description                                                          | Example           |
-| ------------------------------ | -------------------------------------------------------------------- | ----------------- |
-| **CREDENTIAL\_TYPE**           | AI provider (`openai`, `azure`, `deepseek`, `qwen`, `github_models`) | `openai`          |
-| **OPENAI\_API\_KEY**, etc.     | Credentials for the selected provider                                | `sk-xxxx…`        |
-| **ACTIVE\_CHANNELS**           | Comma-separated list (`cli`, `redis`, `quart`)                       | `cli`,`quart`,`cli,quart`|
-| **USER\_PROJECT\_ROOT\_DIR**   | Absolute path to your project                                        | `/home/user/code` |
-| **YOUTUBE\_API\_KEY** *(opt.)* | Required for `search_on_youtube`                                     | `AIza…`           |
+| Variable                   | Description                                                          | Example           |
+| -------------------------- | -------------------------------------------------------------------- | ----------------- |
+| `CREDENTIAL_TYPE`          | AI provider (`openai`, `azure`, `deepseek`, `qwen`, `github_models`) | `openai`          |
+| `OPENAI_API_KEY`, etc.     | Provider-specific credentials                                        | `sk-xxxx…`        |
+| `ACTIVE_CHANNELS`          | Comma-separated list: `cli`, `redis`, `quart`                        | `cli`,`quart`,`cli,quart`       |
+| `USER_PROJECT_ROOT_DIR`    | Absolute path to your project root                                   | `/home/user/code` |
+| `YOUTUBE_API_KEY` *(opt.)* | Required for YouTube search integration                              | `AIza…`           |
 
-> Only `openai` and `azure` support Assistant-API features—others use basic chat for now.
+> ℹ️ Full Assistant-API support currently applies to OpenAI and Azure OpenAI only.
+> DeepSeek and Qwen will auto-enable when their endpoints support it.
 
 ---
 
 ## Usage
 
-### CLI Chat (WSL)
+### CLI Chat (WSL or Linux)
 
 ```bash
 python chat.py
 ```
 
-* Prompts as **👤 You**, streams replies as **🌺 Assistant**
+* Prompts are prefixed as **👤 You**
+* Assistant replies stream as **🌺 Assistant**
 
+---
 
 ### Web Chat (Quart + SSE)
 
@@ -175,12 +205,14 @@ python chat.py
 hypercorn app:app --bind 127.0.0.1:8000 --workers 1
 ```
 
-1. Browse to `http://127.0.0.1:8000/chat/`
-2. Interact via the SSE-powered chat UI
+1. Open your browser at [http://127.0.0.1:8000/chat/](http://127.0.0.1:8000/chat/)
+2. Start chatting in the live SSE-powered UI
 
-### Experimental: Dynamic Form Rendering & Submission in Chat
+---
 
-The built-in form POSTs to `/submit_user_info` and appends entries to:
+### Dynamic Web Forms (Experimental)
+
+Users can submit form data to the `/submit_user_info` endpoint. Submissions are appended to:
 
 ```
 flexiai/toolsmith/data/csv/user_submissions.csv
@@ -191,17 +223,20 @@ flexiai/toolsmith/data/csv/user_submissions.csv
 ## Contributing
 
 1. Fork the repo
+
 2. Create a feature branch:
 
    ```bash
-   git checkout -b feature/your-feature
+   git checkout -b feature/my-feature
    ```
-3. Implement & document your changes
-4. Submit a Pull Request
 
+3. Make changes with clear commit messages
+
+4. Submit a pull request with context and purpose
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+Licensed under the **MIT License**. See [LICENSE](LICENSE) for full terms.
+
