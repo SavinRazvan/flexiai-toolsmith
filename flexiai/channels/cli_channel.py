@@ -58,7 +58,7 @@ class CLIChannel(BaseChannel):
             else:
                 fallback = event_dict.get("event", "")
                 logger.info("No content key found, printing fallback event")
-                logger.debug("Fallback event value: %r", fallback)
+                # logger.debug("Fallback event value: %r", fallback)
                 print(fallback, end="", flush=True)
 
         except Exception as e:

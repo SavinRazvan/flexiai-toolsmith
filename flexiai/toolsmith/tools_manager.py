@@ -33,15 +33,15 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 
 from flexiai.core.handlers.run_thread_manager import RunThreadManager
-from flexiai.toolsmith.helpers.csv_helpers import CSVHelpers
-from flexiai.toolsmith.helpers.spreadsheet_infrastructure.utils.mixed_helpers import prepare_tool_output
-from flexiai.toolsmith.helpers.spreadsheet_infrastructure.spreadsheet_entrypoint import (
+from flexiai.toolsmith.tools_infrastructure.csv_helpers import CSVHelpers
+from flexiai.toolsmith.tools_infrastructure.spreadsheet_infrastructure.utils.mixed_helpers import prepare_tool_output
+from flexiai.toolsmith.tools_infrastructure.spreadsheet_infrastructure.spreadsheet_entrypoint import (
     file_operations, sheet_operations, data_entry_operations, data_retrieval_operations,
     data_analysis_operations, formula_operations, formatting_operations,
     data_validation_operations, data_transformation_operations,
 )
-from flexiai.toolsmith.helpers.csv_infrastructure.csv_entrypoint import csv_entrypoint
-from flexiai.toolsmith.helpers.security_audit import SecurityAudit, security_audit_dispatcher
+from flexiai.toolsmith.tools_infrastructure.csv_infrastructure.csv_entrypoint import csv_entrypoint
+from flexiai.toolsmith.tools_infrastructure.security_audit import SecurityAudit, security_audit_dispatcher
 
 if TYPE_CHECKING:
     from flexiai.core.handlers.event_handler import EventHandler
@@ -832,7 +832,7 @@ class ToolsManager:
             f"[chart_operations] operation='{operation}', sheet='{sheet_name}', chart_type='{chart_type}', destination='{destination_cell}'"
         )
         try:
-            from flexiai.toolsmith.helpers.spreadsheet_infrastructure.spreadsheet_entrypoint import chart_operations
+            from flexiai.toolsmith.tools_infrastructure.spreadsheet_infrastructure.spreadsheet_entrypoint import chart_operations
             result = chart_operations(
                 operation=operation,
                 path=path,
