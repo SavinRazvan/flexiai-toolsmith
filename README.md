@@ -6,7 +6,7 @@
 
 > **Provider Support Overview**
 >
-> * ✅ **OpenAI** and **Azure OpenAI** — full Assistant-API support (threads, streaming deltas, tool calls)
+> * ✅ **OpenAI** and **Azure OpenAI** — full Assistant-API support
 > * 🟡 **DeepSeek** and **Qwen** — use the OpenAI Python SDK but currently expose **only basic chat completions**
 > * ❌ **GitHub Azure Inference** — limited to basic chat completions
 >
