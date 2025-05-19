@@ -166,8 +166,8 @@ Copy `.env.template` to `.env` and set:
 python chat.py
 ```
 
-* Persists or generates `~/.flexiai_user_id`
 * Prompts as **👤 You**, streams replies as **🌺 Assistant**
+
 
 ### Web Chat (Quart + SSE)
 
