@@ -1,0 +1,6 @@
+contract_holder_name,invoice_number,issue_date,amount_due,payment_status
+"Alex Munteanu","F-001","2023-03-01","550","Paid"
+"Mara Popescu","F-002","2023-03-15","120","Unpaid"
+"Ionel Ionescu","F-003","2023-04-01","55","Paid"
+"Dana Marin","F-004","2023-04-15","170","Unpaid"
+"George Vasile","F-005","2023-05-01","200","Unpaid"

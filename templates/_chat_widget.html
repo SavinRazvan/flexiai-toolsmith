@@ -1,0 +1,20 @@
+<!-- FILE: templates/_chat_widget.html -->
+
+<div id="chat-widget" class="hidden">
+  <div id="chat-header">
+    <span>Assistant</span>
+    <button id="close-chat-btn">×</button>
+  </div>
+  <div id="conversation"></div>
+  <form id="chat-form">
+    <input
+      id="user-input"
+      type="text"
+      autocomplete="off"
+      placeholder="Ask anything"
+      required
+    />
+    <button type="submit">Send</button>
+  </form>
+</div>
+<button id="open-chat-btn">Chat</button>

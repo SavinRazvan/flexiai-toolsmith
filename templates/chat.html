@@ -1,0 +1,32 @@
+{#
+  File: templates/chat.html
+  Purpose: Renders the standalone FlexiAI Assistant chat interface.
+  Overrides the base template to suppress the floating chat widget.
+#}
+{% extends "base.html" %}
+
+{% block title %}Chat — FlexiAI Toolsmith (Beta){% endblock %}
+
+{# Hide the global chat widget on this page to prevent duplicate chat windows. #}
+{% block chat_widget %}{% endblock %}
+
+{% block content %}
+  <div id="chat-box" role="region" aria-label="Chat interface">
+    <div id="chat-header">
+      <span class="chat-title">Assistant</span>
+    </div>
+    <div id="conversation" aria-live="polite"></div>
+    <form id="chat-form" aria-label="Send a message">
+      <input
+        id="user-input"
+        name="message"
+        type="text"
+        autocomplete="off"
+        placeholder="Type your message here…"
+        required
+        aria-required="true"
+      />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+{% endblock %}

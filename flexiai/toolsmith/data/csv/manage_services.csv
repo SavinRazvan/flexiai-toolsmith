@@ -1,0 +1,6 @@
+contract_holder_name,service_type,service_status,current_package,available_options
+Alex Munteanu,TV,Active,Pretty250,"Pretty250, Pretty500, Pretty1000"
+Mara Popescu,Internet + TV,Inactive,Pretty1000,"Pretty250, Pretty500, Pretty1000"
+Ionel Ionescu,TV,Inactive,Pretty250,"Pretty250, Pretty500, Pretty1000"
+Dana Marin,TV,Inactive,Pretty250,"Pretty250, Pretty500, Pretty1000"
+George Vasile,Internet + TV,Inactive,Pretty500,"Pretty250, Pretty500, Pretty1000"

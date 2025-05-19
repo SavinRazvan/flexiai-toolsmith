@@ -1,0 +1,6 @@
+contract_holder_name,phone_number,contract_holder_address,date_of_birth,email_address,personal_id_number,id_card_series,client_code
+"Alex Munteanu","0720123456","Strada Libertatii 10, Bucuresti","1985-04-12","alex.munteanu@email.com","1850412100012","AX123456","1001"
+"Mara Popescu","0721123457","Bdul Unirii 22, Cluj-Napoca","1990-07-19","mara.popescu@email.com","2900719100023","BX654321","1002"
+"Ionel Ionescu","0722123458","Aleea Rozelor 5, Timisoara","1982-11-03","ionel.ionescu@email.com","1821103100034","CX234561","1003"
+"Dana Marin","0723123459","Strada Macesului 33, Iasi","1975-02-28","dana.marin@email.com","2750228100045","DX345612","1004"
+"George Vasile","0724123460","Piata Romana 1, Constanta","1968-09-15","george.vasile@email.com","2680915100056","EX456123","1005"

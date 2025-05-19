@@ -1,0 +1,11 @@
+<!-- FILE: templates/_navbar.html -->
+
+<header class="navbar">
+  <h1><a href="{{ url_for('home') }}">FlexiAI</a></h1>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('chat.render_chat_page') }}">Chat</a></li>
+    </ul>
+  </nav>
+</header>

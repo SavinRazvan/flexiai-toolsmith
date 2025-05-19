@@ -1,0 +1,54 @@
+<!-- FILE: templates/index.html -->
+
+{% extends "base.html" %}
+{% block title %}Home — FlexiAI Toolsmith (beta){% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>FlexiAI&nbsp;Toolsmith</h1>
+      <p>
+        A practical framework for building and testing AI-powered chat assistants.<br>
+        Works from the terminal or a web UI and connects to OpenAI, Azure&nbsp;OpenAI,
+        DeepSeek, and&nbsp;Qwen.
+      </p>
+
+      <a href="{{ url_for('chat.render_chat_page') }}" class="cta-button">
+        Open the web chat
+      </a>
+    </div>
+
+    <div id="hero-video" class="hero-video">
+      {%- if hero_video_embed %}
+        {{ hero_video_embed|safe }}
+      {%- endif %}
+    </div>
+  </section>
+
+  <!-- Features Overview -->
+  <section class="features">
+    <div class="feature">
+      <h3>Multi-channel routing</h3>
+      <p>
+        Fan out every chat update to the CLI console, a Redis&nbsp;Pub/Sub channel,
+        and the Quart-based web UI (SSE)—whichever channels you enable.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>Streaming support</h3>
+      <p>See partial responses as they’re generated in both the terminal and the browser.</p>
+    </div>
+
+    <div class="feature">
+      <h3>Tool integrations</h3>
+      <p>
+        Call built-in helpers for retrieval-augmented answers, CSV / spreadsheet tasks,
+        YouTube search&nbsp;&amp; embeds, subscriber or billing look-ups, and
+        basic security audits.
+        <em>(OCR and dynamic multi-agent support are on the roadmap.)</em>
+      </p>
+    </div>
+  </section>
+{% endblock %}

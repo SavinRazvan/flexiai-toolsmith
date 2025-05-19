@@ -110,7 +110,7 @@
 
 ## Prerequisites
 
-* **Python 3.13+**
+* **Python 3.12+**
 * **Redis** (if you enable `redis` in `ACTIVE_CHANNELS`)
 * **Conda** (Miniconda/Anaconda) *or* **pip** for dependency management
 
@@ -167,7 +167,7 @@ python chat.py
 ```
 
 * Persists or generates `~/.flexiai_user_id`
-* Prompts as **👤 You**, streams replies as **🌺 Artemis**
+* Prompts as **👤 You**, streams replies as **🌺 Assistant**
 
 ### Web Chat (Quart + SSE)
 
