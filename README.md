@@ -1,5 +1,3 @@
-
-
 # FlexiAI Toolsmith
 
 **FlexiAI Toolsmith** is a flexible, multi-channel Python framework for building AI-powered chat assistants. It supports both CLI and web (Quart + SSE) interfaces, integrates with multiple AI providers via the OpenAI Python SDK, and enables assistants to invoke powerful tool plug-ins—including CSV/spreadsheet processing, YouTube search, security audits, dynamic forms, and (soon) OCR.
@@ -56,10 +54,8 @@ Chat events can be streamed to:
 
 Toolsmith enables AI assistants to **invoke dynamic tools via tool calls**, forming a hybrid RAG + MAS system:
 
-* **Persistent Content & Memory**
-
-  * `save_processed_content` / `load_processed_content`
 * **Agent Coordination & Delegation**
+  * `save_processed_content` / `load_processed_content`
 
   * `initialize_agent` / `communicate_with_assistant`
 
