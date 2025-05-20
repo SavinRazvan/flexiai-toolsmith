@@ -56,7 +56,6 @@ Toolsmith enables AI assistants to **invoke dynamic tools via tool calls**, form
 
 * **Agent Coordination & Delegation**
   * `save_processed_content` / `load_processed_content`
-
   * `initialize_agent` / `communicate_with_assistant`
 
 This architecture supports agent-to-agent delegation, live retrieval from external systems, and operational workflows (beyond document search).
@@ -118,11 +117,12 @@ This architecture supports agent-to-agent delegation, live retrieval from extern
  ┃ ┗ 📂 utils
  ┣ 📂 static
  ┣ 📂 templates
+ ┣ 📜 .env
  ┣ 📜 .env.template
  ┣ 📜 .gitignore
  ┣ 📜 app.py
  ┣ 📜 chat.py
- ┣ 📜 environment_full.yml
+ ┣ 📜 environment.yml
  ┣ 📜 requirements.in
  ┗ 📜 requirements.txt
 ```
@@ -149,7 +149,7 @@ This architecture supports agent-to-agent delegation, live retrieval from extern
 2. **Set up the environment (Conda recommended):**
 
    ```bash
-   conda env create -f environment_full.yml
+   conda env create -f environment.yml
    conda activate .conda_flexiai
    ```
 
@@ -188,8 +188,8 @@ Copy `.env.template` to `.env`, then set:
 python chat.py
 ```
 
-* Prompts are prefixed as **👤 You**
-* Assistant replies stream as **🌺 Assistant**
+* Prompts are prefixed as `👤 You`
+* Assistant replies stream as `🌺 Assistant`
 
 ---
 
