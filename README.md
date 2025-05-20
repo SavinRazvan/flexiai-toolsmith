@@ -23,10 +23,8 @@
 4. [Installation](#installation)
 5. [Configuration](#configuration)
 6. [Usage](#usage)
-
    * [CLI Chat](#cli-chat-wsl)
    * [Web Chat (Quart + SSE)](#web-chat-quart--sse)
-   * [Dynamic Web Forms](#dynamic-web-forms)
 7. [Contributing](#contributing)
 8. [License](#license)
 
@@ -207,16 +205,6 @@ hypercorn app:app --bind 127.0.0.1:8000 --workers 1
 
 1. Open your browser at [http://127.0.0.1:8000/chat/](http://127.0.0.1:8000/chat/)
 2. Start chatting in the live SSE-powered UI
-
----
-
-### Dynamic Web Forms (Experimental)
-
-Users can submit form data to the `/submit_user_info` endpoint. Submissions are appended to:
-
-```
-flexiai/toolsmith/data/csv/user_submissions.csv
-```
 
 ---
 
