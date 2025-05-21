@@ -142,7 +142,7 @@ This architecture supports agent-to-agent delegation, live retrieval from extern
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/flexiai-toolsmith.git
+   git clone https://github.com/SavinRazvan/flexiai-toolsmith.git
    cd flexiai-toolsmith
    ```
 
