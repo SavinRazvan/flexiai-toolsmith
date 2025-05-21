@@ -24,7 +24,7 @@ async def main():
     logger.info("[chat.py] CLI Chat application started.")
     
     # ─── Predefined assistant ID ─────────────────────────────────────
-    assistant_id = 'asst_OALzK1cjDBAH5hceWAGjqmBM'  # Columbus
+    assistant_id = 'asst_cJMNuxAUFxGwehJqsBBxf5HR'  # Security Advisor
 
     # ─── Determine or generate a user_id for this session ────────────
     # 1) Check file
