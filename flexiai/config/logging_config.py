@@ -41,9 +41,7 @@ def setup_logging(
     Raises:
         OSError: If the log directory cannot be created.
     """
-    # Print current working directory to ensure we are in the correct location
     current_directory = os.getcwd()
-    print(f"Current working directory: {current_directory}")
 
     # Define log directory and file relative to the project root
     log_directory = os.path.join(current_directory, "logs")
@@ -52,7 +50,6 @@ def setup_logging(
     # Ensure the log directory exists
     try:
         os.makedirs(log_directory, exist_ok=True)
-        print(f"Log directory '{log_directory}' created/exists.")
     except OSError as e:
         print(f"Error creating log directory {log_directory}: {e}")
         return

@@ -57,7 +57,7 @@ async def initialize_controller() -> None:
     controller = await QuartChatController.create_async(selected_assistant)
     qcc.controller_instance = controller
 
-    global ASSISTANT_ID
+    # global ASSISTANT_ID
     ASSISTANT_ID = controller.assistant_id
     logger.info("✅  Controller initialized for assistant '%s'", ASSISTANT_ID)
 

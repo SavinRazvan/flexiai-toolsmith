@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   // ─── Feature toggles & state ─────────────────────────────────────────────
-  const ENABLE_HTML      = true;   // if true, allow raw HTML in assistant messages
-  const DEBUG            = true;   // set to true to see debug‐level logs
-  let reconnectTimeout   = null;   // for debounced reconnects
+  const ENABLE_HTML      = true;        // if true, allow raw HTML in assistant messages
+  const DEBUG            = true;        // set to true to see debug‐level logs
+  let reconnectTimeout   = null;        // for debounced reconnects
 
   // ─── Logging helpers ─────────────────────────────────────────────────────
   function logInfo(...args)  { if (DEBUG) console.info(...args); }
