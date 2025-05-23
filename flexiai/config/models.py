@@ -1,9 +1,6 @@
 # FILE: flexiai/config/models.py
 
-"""
-Pydantic settings models for environment-based configuration of AI providers and general app settings.
-"""
-
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
@@ -14,17 +11,21 @@ class OpenAISettings(BaseSettings):
     Attributes:
         OPENAI_API_KEY (str): API key for OpenAI.
         OPENAI_API_VERSION (str): OpenAI API version.
-        OPENAI_ORGANIZATION_ID (str): Organization ID for billing/accounting.
-        OPENAI_PROJECT_ID (str): Project ID for assistant grouping.
+        OPENAI_ORGANIZATION_ID (Optional[str]): Organization ID for billing/accounting.
+        OPENAI_PROJECT_ID (Optional[str]): Project ID for assistant grouping.
         OPENAI_ASSISTANT_VERSION (str): Assistant version header for OpenAI Beta.
     """
     OPENAI_API_KEY: str = Field(..., env="OPENAI_API_KEY")
-    OPENAI_API_VERSION: str = Field("2023-11-07", env="OPENAI_API_VERSION")
-    OPENAI_ORGANIZATION_ID: str = Field(..., env="OPENAI_ORGANIZATION_ID")
-    OPENAI_PROJECT_ID: str = Field(..., env="OPENAI_PROJECT_ID")
+    OPENAI_API_VERSION: str = Field("2023-11-22", env="OPENAI_API_VERSION")
+    OPENAI_ORGANIZATION_ID: Optional[str] = Field(None, env="OPENAI_ORGANIZATION_ID")
+    OPENAI_PROJECT_ID: Optional[str] = Field(None, env="OPENAI_PROJECT_ID")
     OPENAI_ASSISTANT_VERSION: str = Field("v2", env="OPENAI_ASSISTANT_VERSION")
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
 
 
 class AzureOpenAISettings(BaseSettings):
@@ -39,7 +40,11 @@ class AzureOpenAISettings(BaseSettings):
     AZURE_OPENAI_ENDPOINT: str = Field(..., env="AZURE_OPENAI_ENDPOINT")
     AZURE_OPENAI_API_VERSION: str = Field("2024-05-01-preview", env="AZURE_OPENAI_API_VERSION")
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
 
 
 class DeepSeekSettings(BaseSettings):
@@ -54,7 +59,11 @@ class DeepSeekSettings(BaseSettings):
     DEEPSEEK_BASE_URL: str = Field("https://api.deepseek.com/v1", env="DEEPSEEK_BASE_URL")
     DEEPSEEK_API_VERSION: str = Field("2023-11-22", env="DEEPSEEK_API_VERSION")
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
 
 
 class QwenSettings(BaseSettings):
@@ -66,10 +75,16 @@ class QwenSettings(BaseSettings):
         QWEN_API_VERSION (str): API version for Qwen.
     """
     QWEN_API_KEY: str = Field(..., env="QWEN_API_KEY")
-    QWEN_BASE_URL: str = Field("https://dashscope.aliyuncs.com/compatible-mode/v1", env="QWEN_BASE_URL")
+    QWEN_BASE_URL: str = Field(
+        "https://dashscope.aliyuncs.com/compatible-mode/v1", env="QWEN_BASE_URL"
+    )
     QWEN_API_VERSION: str = Field("2023-11-22", env="QWEN_API_VERSION")
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
 
 
 class GitHubAzureInferenceSettings(BaseSettings):
@@ -84,7 +99,11 @@ class GitHubAzureInferenceSettings(BaseSettings):
         "https://models.inference.ai.azure.com", env="GITHUB_AZURE_INFERENCE_ENDPOINT"
     )
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
 
 
 class GeneralSettings(BaseSettings):
@@ -99,4 +118,8 @@ class GeneralSettings(BaseSettings):
     USER_PROJECT_ROOT_DIR: str = Field("", env="USER_PROJECT_ROOT_DIR")
     ACTIVE_CHANNELS: str = Field("cli", env="ACTIVE_CHANNELS")
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        env_ignore_empty=True,
+    )
