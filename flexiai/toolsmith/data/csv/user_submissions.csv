@@ -8,3 +8,5 @@ John,Snow,option1,true,testing15:55
 First,Last,option2,true,testing new js
 Robin,Batman,option2,true,Testing RB
 Mario,Luigi,option2,true,Testing form 24:41
+asd,asdasd,option1,,radio button test
+"FNN","LNN","option2","false","I disagree, should be false in CSV."

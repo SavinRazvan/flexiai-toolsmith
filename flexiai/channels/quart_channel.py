@@ -17,7 +17,7 @@ class QuartChannel(BaseChannel):
     """
 
     def publish_event(self, event: Any) -> None:
-        logger.debug("QuartChannel.publish_event called with event: %r", event)
+        logger.debug("[publish_event] called with event: %r", event)
         try:
             # 1) Normalize event to a dict
             if isinstance(event, dict):
@@ -51,7 +51,7 @@ class QuartChannel(BaseChannel):
 
             if not user_id:
                 logger.error(
-                    "QuartChannel.publish_event: missing user_id in event.data, dropping event: %s",
+                    "[publish_event] Missing user_id in event.data, dropping event: %s",
                     evt
                 )
                 return
@@ -62,13 +62,13 @@ class QuartChannel(BaseChannel):
             # 5) (Optional) Log the outgoing JSON
             try:
                 evt_json = json.dumps(evt, default=str)
-                # logger.debug("Serialized event JSON: %s", evt_json)
+                # logger.debug("[publish_event] Serialized event JSON: %s", evt_json)
             except Exception:
                 pass
 
             # 6) Enqueue for SSE
             global_sse_manager.put_event(user_id, evt)
-            # logger.debug("Enqueued event to SSEManager for user_id='%s'", user_id)
+            # logger.debug("[publish_event] Enqueued event to SSEManager for user_id='%s'", user_id)
 
         except Exception as e:
-            logger.error("QuartChannel.publish_event error: %s", e, exc_info=True)
+            logger.error("[publish_event] Error: %s", e, exc_info=True)

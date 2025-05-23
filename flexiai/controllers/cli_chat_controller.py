@@ -180,7 +180,7 @@ class CLIChatController:
         print("======================================")
         print("         FlexiAI Chat Session         ")
         print("======================================")
-        print("Type 'exit' or '/exit' to quit the conversation.\n")
+        print("Type '/bye' or '/exit' to quit the conversation.\n")
 
         while True:
             try:
@@ -191,7 +191,7 @@ class CLIChatController:
                 self.logger.error("Error reading input: %s", e, exc_info=True)
                 return
 
-            if user_message.strip().lower() in {"exit", "/exit"}:
+            if user_message.strip().lower() in {"/bye", "/exit"}:
                 self.logger.info("Exiting chat as per user request.")
                 print("Exiting chat...")
                 return

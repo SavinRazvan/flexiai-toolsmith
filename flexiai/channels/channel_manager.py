@@ -37,6 +37,6 @@ def get_active_channels() -> list:
         elif channel == "quart":
             active_channels.append(QuartChannel())
         else:
-            logger.warning("Unknown channel '%s' specified in ACTIVE_CHANNELS", channel)
+            logger.warning("[get_active_channels] Unknown channel '%s' specified in ACTIVE_CHANNELS", channel)
 
     return active_channels

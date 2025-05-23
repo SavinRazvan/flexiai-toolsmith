@@ -64,7 +64,7 @@ class EventHandler:
             thread_id (str): Thread identifier.
             user_id (Optional[str]): Unique identifier of the end user.
         """
-        self.logger.info(f"[start_run] assistant='{assistant_id}', thread='{thread_id}', user='{user_id}'")
+        self.logger.info(f"[start_run] assistant='{assistant_id}', thread='{thread_id}', user_id='{user_id}'")
         # Store for use in delta and completed handlers
         self.current_user_id = user_id
 

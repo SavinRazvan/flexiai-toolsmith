@@ -51,7 +51,7 @@ def setup_logging(
     try:
         os.makedirs(log_directory, exist_ok=True)
     except OSError as e:
-        print(f"Error creating log directory {log_directory}: {e}")
+        logging.debug(f"[setup_logging] Error creating log directory {log_directory}: {e}")
         return
 
     # Get the root logger instance
@@ -85,4 +85,4 @@ def setup_logging(
             console_handler.setFormatter(formatter)
             logger.addHandler(console_handler)
     except Exception as e:
-        print(f"Error setting up logging: {e}")
+        logging.debug(f"Error setting up logging: {e}")

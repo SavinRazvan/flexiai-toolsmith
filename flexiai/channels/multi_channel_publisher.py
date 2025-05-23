@@ -39,7 +39,7 @@ class MultiChannelPublisher:
                 channel.publish_event(event_data)
             except Exception as e:
                 logger.error(
-                    "Error publishing to channel %s: %s",
+                    "[publish] Error publishing to channel %s: %s",
                     type(channel).__name__,
                     e,
                     exc_info=True

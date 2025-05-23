@@ -107,16 +107,19 @@ class GitHubAzureInferenceSettings(BaseSettings):
 
 
 class GeneralSettings(BaseSettings):
-    """General application settings.
+    """General application settings."""
 
-    Attributes:
-        CREDENTIAL_TYPE (str): Which AI provider to use ('openai', 'azure', etc.).
-        USER_PROJECT_ROOT_DIR (str): Root directory of the user's project.
-        ACTIVE_CHANNELS (str): Comma-separated list of channels to enable (e.g., 'cli,quart').
-    """
     CREDENTIAL_TYPE: str = Field("openai", env="CREDENTIAL_TYPE")
-    USER_PROJECT_ROOT_DIR: str = Field("", env="USER_PROJECT_ROOT_DIR")
-    ACTIVE_CHANNELS: str = Field("cli", env="ACTIVE_CHANNELS")
+    USER_PROJECT_ROOT_DIR: str = Field("",    env="USER_PROJECT_ROOT_DIR")
+    ACTIVE_CHANNELS:      str = Field("cli", env="ACTIVE_CHANNELS")
+
+    # always required
+    ASSISTANT_ID:   str = Field(..., env="ASSISTANT_ID")
+    USER_ID:        str = Field(..., env="USER_ID")
+
+    # optional with defaults
+    ASSISTANT_NAME: str = Field("Assistant", env="ASSISTANT_NAME")
+    USER_NAME:      str = Field("User",      env="USER_NAME")
 
     model_config = SettingsConfigDict(
         env_file=".env",

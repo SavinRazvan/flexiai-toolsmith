@@ -65,7 +65,7 @@ class RunThreadManager:
                 del self.active_threads[key]
 
         try:
-            self.logger.info(f"[get_or_create_thread] Creating new thread for '{assistant_id}' (user '{user_id}')")
+            self.logger.info(f"[get_or_create_thread] Creating new thread for: '{assistant_id}' (user_id: '{user_id}')")
             thread = await self.client.beta.threads.create()
             thread_id = thread.id
             async with self.lock:
@@ -121,11 +121,11 @@ class RunThreadManager:
             RuntimeError: If the API call fails.
         """
         if not message.strip():
-            self.logger.warning(f"[add_message_to_thread] Empty message for thread '{thread_id}'")
-            raise ValueError("Message cannot be empty")
+            self.logger.warning(f"[add_message_to_thread] Empty message for thread '{thread_id}'.")
+            raise ValueError("[add_message_to_thread] Message cannot be empty")
 
         try:
-            self.logger.info(f"[add_message_to_thread] Thread '{thread_id}': adding message (user '{user_id}')")
+            self.logger.info(f"[add_message_to_thread] Thread id: '{thread_id}' -> adding message for user_id: '{user_id}'.")
 
             # Build kwargs dynamically so we only send metadata if user_id provided
             kwargs: Dict[str, Any] = {
@@ -151,7 +151,7 @@ class RunThreadManager:
             return message_id
         except Exception as e:
             self.logger.error(f"[add_message_to_thread] Error: {e}", exc_info=True)
-            raise RuntimeError(f"Error adding message to thread '{thread_id}'") from e
+            raise RuntimeError(f"[add_message_to_thread] Error adding message to thread '{thread_id}'") from e
 
     async def start_run(self, assistant_id: str, thread_id: str) -> Any:
         """
@@ -167,7 +167,7 @@ class RunThreadManager:
         Raises:
             Exception: If the API call fails.
         """
-        self.logger.info(f"[start_run] assistant='{assistant_id}', thread='{thread_id}'")
+        self.logger.info(f"[start_run] assistant_id='{assistant_id}', thread_id='{thread_id}'")
         try:
             run = await self.client.beta.threads.runs.create(
                 thread_id=thread_id,
@@ -192,7 +192,7 @@ class RunThreadManager:
         Returns:
             AsyncAssistantStreamManager: The stream manager you can `async with`.
         """
-        self.logger.info(f"[submit_tool_outputs_stream] run='{run_id}', thread='{thread_id}'")
+        self.logger.info(f"[submit_tool_outputs_stream] run='{run_id}', thread_id='{thread_id}'")
         return self.client.beta.threads.runs.submit_tool_outputs_stream(
             thread_id=thread_id,
             run_id=run_id,

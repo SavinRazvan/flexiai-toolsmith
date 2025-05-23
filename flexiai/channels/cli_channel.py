@@ -40,26 +40,26 @@ class CLIChannel(BaseChannel):
             # Convert to dict if necessary
             if hasattr(event, "model_dump"):
                 event_dict = event.model_dump()
-                logger.debug("Converted Pydantic model to dict: %s", event_dict)
+                logger.debug("[publish_event] Event: %s", event_dict)
             elif isinstance(event, dict):
                 event_dict = event
-                logger.debug("Received dict event: %s", event_dict)
+                logger.debug("[publish_event] Received dict event: %s", event_dict)
             else:
                 event_dict = {"event": str(event)}
-                logger.debug("Wrapped non-dict event into dict: %s", event_dict)
+                logger.debug("[publish_event] Wrapped non-dict event into dict: %s", event_dict)
 
             # Extract content
             content = event_dict.get("content")
             if content:
-                # logger.info("Publishing %d content chunks", len(content))
+                # logger.info("[publish_event] Publishing %d content chunks", len(content))
                 for idx, chunk in enumerate(content):
-                    # logger.debug("Printing chunk %d: %r", idx, chunk)
+                    # logger.debug("[publish_event] Printing chunk %d: %r", idx, chunk)
                     print(chunk, end="", flush=True)
             else:
                 fallback = event_dict.get("event", "")
-                logger.info("No content key found, printing fallback event")
-                # logger.debug("Fallback event value: %r", fallback)
+                logger.info("[publish_event] No content key found, printing fallback event")
+                # logger.debug("[publish_event] Fallback event value: %r", fallback)
                 print(fallback, end="", flush=True)
 
         except Exception as e:
-            logger.error("Error publishing event to CLI: %s", e, exc_info=True)
+            logger.error("[publish_event] Error publishing event to CLI: %s", e, exc_info=True)
