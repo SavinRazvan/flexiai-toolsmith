@@ -164,10 +164,6 @@ class QuartChatController:
         Client calls this to flush buffered events and go live.
         """
         user_id = g.user_id
-        logger.info(
-            "[route /ready] Flushing %d buffered events for user_id '%s'",
-            len(controller_instance.event_buffer), user_id
-        )
         await controller_instance.flush_event_buffer(user_id)
         return jsonify({"status": "ready"}), 200
 
@@ -179,10 +175,6 @@ class QuartChatController:
             buffered = list(self.event_buffer)
             self.event_buffer.clear()
 
-        logger.info(
-            "[flush_event_buffer] Flushing %d events to SSE for '%s'",
-            len(buffered), user_id
-        )
         for ev in buffered:
             SSEManager.put_event(user_id, ev)
 
