@@ -136,6 +136,8 @@ Toolsmith lets assistants **invoke dynamic tools via tool calls**, giving you a 
 
    ```bash
    git clone https://github.com/SavinRazvan/flexiai-toolsmith.git
+   ```
+   ```bash
    cd flexiai-toolsmith
    ```
 
