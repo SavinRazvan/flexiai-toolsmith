@@ -44,14 +44,15 @@ Chat events can be streamed to:
 
 
 <p align="center">
-  <a href="https://youtu.be/XbPTmP0oD44" target="_blank">
+  <a href="https://youtu.be/XbPTmP0oD44?feature=shared" target="_blank">
     <img src="https://img.youtube.com/vi/XbPTmP0oD44/0.jpg" alt="▶ Quick Test: Quart channel demo" width="360">
   </a>
   &nbsp;&nbsp;
-  <a href="https://youtu.be/HYyQQHaRzZ0" target="_blank">
+  <a href="https://youtu.be/HYyQQHaRzZ0?feature=shared" target="_blank">
     <img src="https://img.youtube.com/vi/HYyQQHaRzZ0/0.jpg" alt="▶ Quick Test: CLI channel demo" width="360">
   </a>
 </p>
+
 
 ---
 
