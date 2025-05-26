@@ -43,12 +43,12 @@ Chat events can be streamed to:
 ## Tutorials / Quick Demos
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=f0kiygTrpyk" target="_blank">
-    <img src="https://img.youtube.com/vi/f0kiygTrpyk/0.jpg" alt="▶ Quick Test: Quart channel demo" width="360">
+  <a href="https://m.youtube.com/watch?v=XbPTmP0oD44" target="_blank">
+    <img src="https://m.youtube.com/watch?v=XbPTmP0oD44/0.jpg" alt="▶ Quick Test: Quart channel demo" width="360">
   </a>
   &nbsp;&nbsp;
-  <a href="https://www.youtube.com/watch?v=aZLCpOMoZFI" target="_blank">
-    <img src="https://img.youtube.com/vi/aZLCpOMoZFI/0.jpg" alt="▶ Quick Test: CLI channel demo" width="360">
+  <a href="https://m.youtube.com/watch?v=HYyQQHaRzZ0" target="_blank">
+    <img src="https://m.youtube.com/watch?v=HYyQQHaRzZ0/0.jpg" alt="▶ Quick Test: CLI channel demo" width="360">
   </a>
 </p>
 
