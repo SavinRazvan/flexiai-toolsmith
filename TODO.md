@@ -7,3 +7,11 @@
 * [ ] Add simple → advanced tool example  
 * [ ] Create tutorial videos on crafting assistant instructions  
 * [ ] New wrapper for Assistants API for any chat completions. (open-source LLMs focus)
+
+
+
+---
+
+**NOTES**
+
+> In `chat.js` stil need to fix bugs (in Quart on backend works correct -- but on forntend when I made the experiments to add Forms and video rendering (are some edge cases)
