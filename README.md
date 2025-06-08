@@ -195,6 +195,30 @@ hypercorn app:app --bind 127.0.0.1:8000 --workers 1
 
 ---
 
+## Running with Docker
+
+You can run FlexiAI Toolsmith in a container without installing Python or dependencies on your host.
+
+### 1. Build the Docker image
+
+```bash
+docker build -t flexiai-toolsmith .
+```
+
+### 2. Run the container
+
+```bash
+docker run -p 8000:8000 flexiai-toolsmith
+```
+
+The web interface will be available at [http://localhost:8000/chat/](http://localhost:8000/chat/).
+
+> **Note:**  
+> Make sure your `.env` file is present in the project root before building the image.  
+> For production, consider using `hypercorn` as the entrypoint.
+
+---
+
 ## Contributing
 
 1. **Fork** ➜ create a feature branch
