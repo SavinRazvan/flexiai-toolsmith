@@ -49,8 +49,8 @@ dependencies:
   - pip=25.1
   - pthread-stubs=0.4
   - pytesseract=0.3.13
-  - python=3.13.2
-  - python_abi=3.13
+  - python=3.12
+  - python_abi=3.12
   - readline=8.2
   - setuptools=78.1.1
   - sqlite=3.49.2
