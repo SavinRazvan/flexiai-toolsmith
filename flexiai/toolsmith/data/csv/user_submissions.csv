@@ -2,7 +2,7 @@ first_name,last_name,radio_choice,checkbox_choice,text_area
 Alice,Smith,option1,true,"I love the product"
 johny,bravo,option2,true,"I am Johnny Bravo, the one-man army!"
 fname,lname,option2,true,test001
-Nicusor,Dan,option1,true,Presedinte
+N,D,option1,true,Presedinte
 f-name,l-name,option2,,din_widget
 John,Snow,option1,true,testing15:55
 First,Last,option2,true,testing new js
@@ -11,3 +11,4 @@ Mario,Luigi,option2,true,Testing form 24:41
 asd,asdasd,option1,,radio button test
 "FNN","LNN","option2","false","I disagree, should be false in CSV."
 "test","nou","option1","true","testing user id and following each run"
+"Edi","Sebi","option2","true","14:42"
