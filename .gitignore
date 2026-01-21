@@ -200,7 +200,6 @@ agents_experiments/other_experiments/context_manager.py
 agents_experiments/other_experiments/conversation_manager.py
 agents_experiments/other_experiments/test_001.ipynb
 
-COMMIT_SUMMARY.txt
 flexiai/agents/__init__.py
 flexiai/agents/behaviors/__init__.py
 flexiai/agents/behaviors/adaptive_behaviors.py
@@ -253,4 +252,4 @@ flexiai/agents/workflows/task_scheduler.py
 flexiai/agents/workflows/workflow_builder.py
 flexiai/agents/workflows/workflow_engine.py
 flexiai/agents/workflows/workflow_templates.py
-FINAL_COMMIT_STEPS.md
+
