@@ -1,80 +1,63 @@
 # FlexiAI Toolsmith
 
-> **Build production-ready AI assistants with multi-channel support, dynamic tool orchestration, and seamless provider integration.**
+**FlexiAI Toolsmith** is a modular Python framework for building applied AI assistants that combine large language models with structured context, backend tools, and external services.
 
-**FlexiAI Toolsmith** is a flexible, enterprise-grade Python framework for building AI-powered chat assistants. It provides a unified interface for multiple AI providers, supports both CLI and web interfaces with real-time streaming, and enables assistants to invoke powerful tool plug-ins through a dynamic orchestration system.
+The framework focuses on **orchestration, extensibility, and practical use cases**, enabling AI systems to move beyond generic chat and perform concrete tasks such as data processing, automation workflows, and system checks. It supports both CLI and web-based interaction with real-time streaming and a pluggable tool architecture.
 
-## 🚀 Key Features
+FlexiAI Toolsmith was designed as a reusable foundation and has been used to build multiple applied systems, including:
 
-* **Multi-Channel Architecture** — Deploy to CLI, web (Quart + SSE), or Redis Pub/Sub simultaneously
-* **Multi-Provider Support** — Seamlessly switch between OpenAI, Azure OpenAI, DeepSeek, Qwen, and GitHub Azure Inference
-* **Dynamic Tool System** — Extensible tool registry with built-in support for CSV/spreadsheet operations, YouTube search, security audits, dynamic forms, and more
-* **Event-Driven Design** — Pub/sub event bus for decoupled, scalable communication
-* **Production Ready** — Structured logging, error handling, session management, and Docker support
+* **Alina Assistant** – a customer service automation system handling identification, validation, and subscription workflows.
+* **Security analysis agents** that perform structured configuration checks and inspections through controlled, tool-driven execution.
 
-## 🤖 AI Provider Support
-
-| Provider | Assistant API | Chat Completions | Notes |
-|----------|---------------|------------------|-------|
-| **OpenAI** | ✅ Full Support | ✅ | Threads, deltas, tool calls, streaming |
-| **Azure OpenAI** | ✅ Full Support | ✅ | Threads, deltas, tool calls, streaming |
-| **DeepSeek** | ❌ Not Supported | ✅ | OpenAI SDK compatible, chat completions only |
-| **Qwen** | ❌ Not Supported | ✅ | OpenAI SDK compatible, chat completions only |
-| **GitHub Azure Inference** | ❌ Not Supported | ✅ | Azure AI SDK, chat completions only |
-
-> **Note:** Assistant API (threads, runs, tool calls) is currently only available for OpenAI and Azure OpenAI. DeepSeek and Qwen use OpenAI SDK compatibility for chat completions, but do not support Assistant API endpoints. If these providers add Assistant API support in the future, code changes would be required to add the appropriate headers and configuration.
+The project emphasizes clarity of architecture, modular design, and real-world usability rather than experimentation or model benchmarking.
 
 ---
 
-## Table of Contents
+## Key Characteristics
 
-1. [Key Features](#-key-features)  
-2. [AI Provider Support](#-ai-provider-support)  
-3. [Detailed Features](#detailed-features)  
-4. [Architecture Diagrams](#architecture-diagrams)  
-5. [Architecture](#architecture)  
-6. [Prerequisites](#prerequisites)  
-7. [Installation](#installation)  
-8. [Configuration](#configuration)  
-9. [Usage](#usage)  
-   * [CLI Chat](#cli-chat)  
-   * [Web Chat (Quart + SSE)](#web-chat-quart--sse)  
-10. [Running with Docker](#running-with-docker)  
-11. [Documentation](#documentation)  
-12. [Contributing](#contributing)  
-13. [License](#license)
+* **Modular Architecture** – Clear separation between orchestration, tools, channels, and providers.
+* **Tool-Driven AI** – Assistants invoke structured tools via explicit tool calls instead of relying on free-form responses.
+* **Context-Aware Workflows** – Structured context is injected into assistant interactions to ensure grounded behavior.
+* **Multi-Channel Interaction** – CLI and web interfaces with real-time streaming via Server-Sent Events (SSE).
+* **Event-Driven Design** – Pub/sub-style event flow for decoupled, maintainable components.
+* **Provider Abstraction** – Unified interface for multiple LLM providers where supported.
 
 ---
 
-## Detailed Features
+## AI Provider Integration
 
-### Multi-Channel Publishing
+FlexiAI Toolsmith supports multiple LLM providers through a unified interface.
 
-Chat events can be streamed to multiple channels simultaneously:
+Advanced Assistant API features (threads, runs, tool calls, streaming) are currently available for **OpenAI** and **Azure OpenAI**. Other providers are supported via chat-completions compatibility where applicable.
 
-* **CLI** (`CLIChannel`) — Interactive terminal interface with real-time streaming
-* **Redis Pub/Sub** (`RedisChannel`) — Distributed messaging for microservices
-* **SSE Web clients** via Quart (`QuartChannel` + `SSEManager`) — Real-time browser updates
+| Provider               | Assistant API | Chat Completions | Notes                          |
+| ---------------------- | ------------- | ---------------- | ------------------------------ |
+| OpenAI                 | ✅             | ✅                | Threads, streaming, tool calls |
+| Azure OpenAI           | ✅             | ✅                | Threads, streaming, tool calls |
+| DeepSeek               | ❌             | ✅                | OpenAI SDK compatible          |
+| Qwen                   | ❌             | ✅                | OpenAI SDK compatible          |
+| GitHub Azure Inference | ❌             | ✅                | Azure AI SDK                   |
 
-### Streaming Assistant API
+---
 
-* Thread life-cycle management (create → queue → in-progress → complete)  
-* Event routing via in-memory `EventBus` + `EventDispatcher`  
-* Delta-based message streaming with `MessageDeltaEvent`
+## Context-Aware Tool Orchestration
 
-### Dynamic RAG & Multi-Agent Tool Orchestration
+FlexiAI Toolsmith enables assistants to combine model responses with structured context and deterministic tool execution.
 
-Toolsmith enables assistants to **invoke dynamic tools via tool calls**, providing a hybrid RAG + Multi-Agent System:
+Instead of relying on unconstrained generation, assistants:
 
-* **Agent coordination & delegation**  
-  * `save_processed_content` / `load_processed_content`  
-  * `initialize_agent` / `communicate_with_assistant`
+* Build context from structured data sources
+* Invoke explicit tools via tool calls
+* Process results deterministically
+* Feed validated outputs back into the assistant workflow
+
+The framework also includes **experimental support for multi-agent coordination**, where assistants can share context and delegate tasks in a controlled manner.
 
 ---
 
 ## Architecture Diagrams
 
-Visual overview of the FlexiAI Toolsmith architecture and workflows:
+Visual overview of the FlexiAI Toolsmith architecture and workflows.
 
 ### 1. High-Level Architecture
 
@@ -82,7 +65,7 @@ Visual overview of the FlexiAI Toolsmith architecture and workflows:
   <img src="static/images/diagrams/DIAGRAM%201%20%E2%80%94%20High-Level%20Architecture-2026-01-21-201950.png" alt="High-Level Architecture Diagram" style="max-width: 100%; height: auto;">
 </p>
 
-**Description:** Complete system architecture showing entry points (`app.py`, `chat.py`), controllers, core handlers, event system, channels, and tool infrastructure. Illustrates how components interact and data flows through the system.
+**Description:** System architecture showing entry points, controllers, core handlers, event system, channels, and tool infrastructure. Illustrates how data flows through the framework.
 
 ---
 
@@ -92,7 +75,7 @@ Visual overview of the FlexiAI Toolsmith architecture and workflows:
   <img src="static/images/diagrams/DIAGRAM%202%20%E2%80%94%20Web%20Request%20Lifecycle-2026-01-21-201839.png" alt="Web Request Lifecycle Diagram" style="max-width: 100%; height: auto;">
 </p>
 
-**Description:** End-to-end flow of a web request from browser HTTP POST through Quart controller, OpenAI Assistant API, event processing, tool execution (if needed), and SSE streaming back to the browser. Shows the complete request/response cycle.
+**Description:** End-to-end flow of a web request from browser interaction through Quart controllers, assistant execution, tool invocation (if required), and SSE streaming back to the client.
 
 ---
 
@@ -102,335 +85,126 @@ Visual overview of the FlexiAI Toolsmith architecture and workflows:
   <img src="static/images/diagrams/DIAGRAM%203%20%E2%80%94%20Tool%20Execution%20Flow-2026-01-21-201759.png" alt="Tool Execution Flow Diagram" style="max-width: 100%; height: auto;">
 </p>
 
-**Description:** Detailed workflow of tool execution from AI assistant tool call request through tool registry lookup, tool manager execution, infrastructure modules (CSV/Spreadsheet/Security), result processing, and submission back to the assistant.
+**Description:** Workflow showing how tool calls are routed through the tool registry, executed by infrastructure modules, and returned to the assistant in a structured form.
 
 ---
 
-> **📖 For detailed file relationships and workflows, see:**
-> - [`FILE_MAPPING.md`](FILE_MAPPING.md) - Complete file mapping with detailed imports/exports and relationships
-> - [`project_files_relations.md`](project_files_relations.md) - Complete workflow documentation
+## Built-in Tool Modules
 
-## Built-in Tool Plug-ins
+### Core Capabilities
 
-### Core Tools
-* **RAG (Retrieval-Augmented Generation)** — `save_processed_content`, `load_processed_content`  
-* **Multi-Agent Coordination** — `initialize_agent`, `communicate_with_assistant`  
-* **YouTube Search** — `search_youtube`, `search_on_youtube` (requires `YOUTUBE_API_KEY`)  
-* **Product Filtering** — `filter_products` (`ai_custom_products`)  
+* **Context Storage** – Save and retrieve processed context across sessions.
+* **Agent Coordination (Experimental)** – Controlled assistant communication and delegation.
+* **Search Utilities** – External lookup helpers (e.g. YouTube search).
+* **Product Filtering** – Structured data filtering utilities.
 
 ### Data Management
-* **CSV Operations** — `csv_operations` (full CRUD: create, read, update, delete, filter, validate, transform)  
-* **Spreadsheet Operations** — Complete Excel/OpenPyXL support:
-  - `file_operations` - Create, open, close spreadsheets
-  - `sheet_operations` - Sheet management
-  - `data_entry_operations` - Write data to cells
-  - `data_retrieval_operations` - Read data from cells
-  - `data_analysis_operations` - Analyze spreadsheet data
-  - `formula_operations` - Formula management
-  - `formatting_operations` - Cell formatting
-  - `data_validation_operations` - Data validation
-  - `data_transformation_operations` - Data transformation
-  - `chart_operations` - Chart creation
 
-### Business Tools
-* **Subscriber Management** — `identify_subscriber`, `retrieve_billing_details`, `manage_services`  
-* **Security Audits** — `security_audit` (reconnaissance, port scans, defenses, updates)  
+* **CSV Operations** – Create, read, update, validate, transform, and filter CSV data.
+* **Spreadsheet Operations** – Excel/OpenPyXL-based tooling:
+
+  * File and sheet management
+  * Data entry and retrieval
+  * Analysis, formulas, formatting
+  * Validation, transformation, and chart generation
+
+### Business-Oriented Tools
+
+* **Subscriber Management** – Identification, billing lookup, and service handling workflows.
+* **Security Analysis Tools** – Structured configuration checks and inspection routines executed through controlled workflows.
 
 ### Experimental
-* **Web Forms** — Generates interactive forms as Markdown in the Quart/SSE chat UI; submissions are sent via POST to `/submit_user_info` and persisted to CSV
-* **OCR** — `flexiai/toolsmith/_recycle/ocr_utils.py` (Coming Soon - experimental, not yet integrated)
 
-## Configurable & Extensible
-
-* **Pydantic-based Configuration** — Type-safe `.env` configuration with validation
-* **Modular Architecture** — Factory patterns for channels, credentials, handlers, tools
-* **Structured Logging** — Rotating file logs + console output with configurable levels
-* **Multi-Provider Support** — Unified interface for multiple AI providers
-* **Event-Driven Design** — Pub/sub event bus for decoupled communication
-* **Tool Registry System** — Dynamic tool registration and execution
-* **Database Support** — SQLAlchemy ORM (prepared for future features)
-* **Experimental Agents** — Multi-agent system framework (in `flexiai/agents/`)
+* **Dynamic Web Forms** – Generate interactive forms inside the web chat UI; submissions are persisted as structured data.
+* **OCR Utilities** – Experimental OCR helpers (not yet integrated).
 
 ---
 
-## Architecture
-
-### Project Structure
+## Project Structure
 
 ```text
 📦 flexiai-toolsmith
  ┣ 📂 flexiai
- ┃ ┣ 📂 agents              # Multi-agent system (experimental)
- ┃ ┣ 📂 channels            # Event publishing (CLI, Quart SSE, Redis)
- ┃ ┣ 📂 config              # Configuration & settings management
- ┃ ┣ 📂 controllers         # Application controllers (CLI & Web)
+ ┃ ┣ 📂 agents              # Experimental multi-agent logic
+ ┃ ┣ 📂 channels            # CLI, Quart SSE, Redis
+ ┃ ┣ 📂 config              # Configuration & settings
+ ┃ ┣ 📂 controllers         # CLI and web controllers
  ┃ ┣ 📂 core
  ┃ ┃ ┣ 📂 events            # Event models, bus, SSE manager
- ┃ ┃ ┗ 📂 handlers          # Event handler, thread manager, tool executor
- ┃ ┣ 📂 credentials         # AI provider credential management
- ┃ ┣ 📂 database            # Database models & connection (SQLAlchemy)
- ┃ ┣ 📂 toolsmith           # Tool infrastructure (CSV, Spreadsheet, Security)
- ┃ ┗ 📂 utils               # Utility functions (context management)
- ┣ 📂 static                # CSS, JavaScript, images
- ┣ 📂 templates             # HTML templates (Quart/Jinja2)
+ ┃ ┃ ┗ 📂 handlers          # Thread manager, tool executor
+ ┃ ┣ 📂 credentials         # Provider credentials
+ ┃ ┣ 📂 database            # SQLAlchemy models (prepared)
+ ┃ ┣ 📂 toolsmith           # Tool infrastructure
+ ┃ ┗ 📂 utils               # Context utilities
+ ┣ 📂 static                # Assets and diagrams
+ ┣ 📂 templates             # Quart/Jinja templates
  ┣ 📂 logs                  # Application logs
- ┣ 📜 app.py                # Web entry point (Quart server)
+ ┣ 📜 app.py                # Web entry point
  ┣ 📜 chat.py               # CLI entry point
- ┣ 📜 .env                  # Environment variables (git-ignored)
- ┣ 📜 .env.template         # Environment template
- ┣ 📜 environment.yml       # Conda environment
- ┣ 📜 requirements.txt      # Python dependencies
- ┣ 📜 requirements.in      # Source dependencies
- ┣ 📜 setup_env.sh         # Automated setup script
- ┗ 📜 Dockerfile            # Docker configuration
+ ┣ 📜 .env.template
+ ┣ 📜 environment.yml
+ ┣ 📜 requirements.txt
+ ┣ 📜 Dockerfile
 ```
-
-### Core Components
-
-**Entry Points:**
-- `app.py` - Web application (Quart + SSE)
-- `chat.py` - CLI application
-
-**Configuration Chain:**
-- `config/models.py` → `config/client_settings.py` → `credentials/credentials.py` → `config/client_factory.py`
-
-**Event Flow:**
-- Controllers → Event Handler → Event Dispatcher → Tool Executor → Tools Registry → Tools Manager
-
-**Channel System:**
-- Multi-Channel Publisher → Channel Manager → Individual Channels (CLI/Quart/Redis) → Event Bus
-
-**Tool System:**
-- Tools Manager → Tools Registry → Infrastructure Modules (CSV/Spreadsheet/Security)
-
-For detailed file relationships and workflows, see:
-- [`FILE_MAPPING.md`](FILE_MAPPING.md) - Complete file mapping with detailed imports/exports and relationships
-- [`project_files_relations.md`](project_files_relations.md) - Complete workflow and relations
 
 ---
 
 ## Prerequisites
 
-* **Python 3.12+** (Python 3.13 also supported)
-* **Conda** (Miniconda/Anaconda) *or* `pip` + `venv`
-* **Redis** (optional - only needed if `redis` is in `ACTIVE_CHANNELS`)
-* **OpenAI Assistant** - Create an assistant in OpenAI/Azure dashboard and get the `ASSISTANT_ID`
+* Python 3.12+
+* Conda or `pip` + `venv`
+* Redis (optional, only if enabled)
+* OpenAI or Azure OpenAI assistant ID
 
 ---
 
 ## Installation
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/SavinRazvan/flexiai-toolsmith.git
+cd flexiai-toolsmith
+./setup_env.sh
+```
 
-   ```bash
-   git clone https://github.com/SavinRazvan/flexiai-toolsmith.git
-   cd flexiai-toolsmith
-   ```
-
-2. **Set up the environment**
-
-   **Option A: Automated Setup (Recommended)**
-   ```bash
-   ./setup_env.sh
-   ```
-   The script will guide you through Conda or venv setup and create your `.env` file.
-
-   **Option B: Manual Setup with Conda**
-   ```bash
-   conda env create -f environment.yml
-   conda activate .conda_flexiai
-   cp .env.template .env
-   # Edit .env with your settings
-   ```
-
-   **Option C: Manual Setup with venv**
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   cp .env.template .env
-   # Edit .env with your settings
-   ```
-
-3. **Configure your environment**
-
-   Edit `.env` and set at minimum:
-   - `CREDENTIAL_TYPE` - Your AI provider
-   - `ASSISTANT_ID` - Your assistant ID (get from OpenAI/Azure dashboard)
-   - `USER_ID` - User identifier
-   - Provider-specific API keys
-
-   See [Configuration](#configuration) section for all options.
-
----
-
-## Configuration
-
-### Required Setup
-
-1. **Copy the environment template:**
-   ```bash
-   cp .env.template .env
-   ```
-
-2. **Edit `.env` with your settings:**
-
-#### Required Variables
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `CREDENTIAL_TYPE` | AI provider: `openai`, `azure`, `deepseek`, `qwen`, `github_models` | `openai` |
-| `ASSISTANT_ID` | **Required** - Your OpenAI/Azure Assistant ID | `asst_abc123...` |
-| `USER_ID` | **Required** - User identifier for sessions | `user_123` |
-
-#### Provider-Specific Credentials
-
-**For OpenAI:**
-- `OPENAI_API_KEY` - Your OpenAI API key
-
-**For Azure OpenAI:**
-- `AZURE_OPENAI_API_KEY` - Azure API key
-- `AZURE_OPENAI_ENDPOINT` - Azure endpoint URL
-
-**For DeepSeek:**
-- `DEEPSEEK_API_KEY` - DeepSeek API key
-
-**For Qwen:**
-- `QWEN_API_KEY` - Qwen API key
-
-**For GitHub Azure Inference:**
-- `GITHUB_TOKEN` - GitHub personal access token
-
-#### Optional Configuration
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `ACTIVE_CHANNELS` | Channels to use: `cli`, `redis`, `quart` (comma-separated) | `cli` |
-| `USER_PROJECT_ROOT_DIR` | Absolute path for project files | Empty |
-| `ASSISTANT_NAME` | Display name for assistant | `Assistant` |
-| `USER_NAME` | Display name for user | `User` |
-| `SECRET_KEY` | Secret key for Quart sessions | `fallback-secret` |
-| `YOUTUBE_API_KEY` | Needed for YouTube search tool | None |
-| `DATABASE_URL` | Database connection string (SQLite default) | Auto-generated |
-| `REDIS_URL` | Redis connection URL (if using Redis channel) | `redis://localhost:6379/0` |
-
-> **Note:** Assistant-API features (threads, runs, tool calls, streaming) currently work on OpenAI & Azure OpenAI only. DeepSeek and Qwen support chat completions via OpenAI SDK compatibility, but do not support Assistant API endpoints.
-
-> **Tip:** See [`ENV_SETUP.md`](ENV_SETUP.md) for detailed setup instructions.
+Copy `.env.template` to `.env` and configure required variables.
 
 ---
 
 ## Usage
 
-### CLI Chat
+### CLI
 
 ```bash
-# Activate environment first
-conda activate .conda_flexiai  # or: source .venv/bin/activate
-
-# Run CLI chat
 python chat.py
 ```
 
-**Features:**
-* Prompts show as `👤 You`
-* Assistant messages stream as `🌺 Assistant`
-* Real-time streaming responses
-* Tool execution with progress indicators
-* Works on Linux, macOS, and WSL
-
-### Web Chat (Quart + SSE)
+### Web (Quart + SSE)
 
 ```bash
-# Activate environment first
-conda activate .conda_flexiai  # or: source .venv/bin/activate
-
-# Run web server
 hypercorn app:app --bind 127.0.0.1:8000 --workers 1
 ```
 
-**Access:**
-1. Browse to **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** (landing page)
-2. Navigate to **[http://127.0.0.1:8000/chat/](http://127.0.0.1:8000/chat/)** (chat interface)
-3. Start chatting in the live SSE UI
+Access:
 
-**Features:**
-* Server-Sent Events (SSE) for real-time streaming
-* Interactive web interface
-* Form generation and submission
-* Session management
-* Multi-user support
-
----
-
-## Running with Docker
-
-You can run FlexiAI Toolsmith in a container without installing Python or dependencies on your host.
-
-### 1. Build the Docker image
-
-```bash
-docker build -t flexiai-toolsmith .
-```
-
-### 2. Run the container
-
-```bash
-docker run -p 8000:8000 flexiai-toolsmith
-```
-
-The web interface will be available at [http://localhost:8000/chat/](http://localhost:8000/chat/).
-
-> **Note:**  
-> Make sure your `.env` file is present in the project root before building the image.  
-> For production, consider using `hypercorn` as the entrypoint.
+* `http://127.0.0.1:8000/`
+* `http://127.0.0.1:8000/chat/`
 
 ---
 
 ## Documentation
 
-Comprehensive documentation is available:
+* `FILE_MAPPING.md` – Detailed file and dependency mapping
+* `project_files_relations.md` – Workflow and execution paths
+* `ENV_SETUP.md` – Environment configuration guide
 
-* **[`FILE_MAPPING.md`](FILE_MAPPING.md)** - Complete file mapping with detailed imports/exports, relationships, and module overview
-* **[`project_files_relations.md`](project_files_relations.md)** - Complete project workflow and file relations
-* **[`ENV_SETUP.md`](ENV_SETUP.md)** - Detailed environment setup guide
-
-## Project Statistics
-
-* **Total Python Files**: 113
-* **Core Application**: ~30 files
-* **Tool Infrastructure**: ~50 files
-* **Agents (Experimental)**: ~30 files
-* **Configuration**: 4 files
-* **Controllers**: 2 files (CLI & Web)
-* **Channels**: 6 files (CLI, Quart SSE, Redis)
-* **Core Handlers**: 5 files
-* **Core Events**: 5 files
+---
 
 ## Contributing
 
-1. **Fork** ➜ create a feature branch
-
-   ```bash
-   git checkout -b feature/my-feature
-   ```
-
-2. **Review the documentation**
-   - Read [`FILE_MAPPING.md`](FILE_MAPPING.md) to understand the architecture
-   - Check [`project_files_relations.md`](project_files_relations.md) for workflow details
-
-3. **Follow the code structure**
-   - Use existing patterns (factories, registries, channels)
-   - Add tools via the ToolsRegistry system
-   - Follow the event-driven architecture
-
-4. **Commit with clear messages**
-
-5. **Open a pull request** explaining context & purpose
+Contributions are welcome. Please review the documentation before submitting changes and follow existing architectural patterns.
 
 ---
 
 ## License
 
-Released under the **MIT License** — see [`LICENSE`](LICENSE) for full terms.
-
+Released under the **MIT License**.
