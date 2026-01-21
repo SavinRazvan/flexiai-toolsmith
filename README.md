@@ -1,44 +1,74 @@
 # FlexiAI Toolsmith
 
-**FlexiAI Toolsmith** is a flexible, multi-channel Python framework for building AI-powered chat assistants. It supports both CLI and web (Quart + SSE) interfaces, integrates with multiple AI providers via the OpenAI Python SDK, and enables assistants to invoke powerful tool plug-ins—including CSV / spreadsheet processing, YouTube search, security audits, dynamic forms, and (soon) OCR.
+> **Build production-ready AI assistants with multi-channel support, dynamic tool orchestration, and seamless provider integration.**
 
-> **Provider Support Overview**
->
-> * ✅ **OpenAI** and **Azure OpenAI** — full Assistant-API support  
-> * 🟡 **DeepSeek** and **Qwen** — OpenAI SDK, but **chat-completions only** for now  
-> * ❌ **GitHub Azure Inference** — chat-completions only  
->
-> ⚙️ When any SDK-backed provider adds Assistant-API support, FlexiAI Toolsmith will pick it up automatically—no code changes required.
+**FlexiAI Toolsmith** is a flexible, enterprise-grade Python framework for building AI-powered chat assistants. It provides a unified interface for multiple AI providers, supports both CLI and web interfaces with real-time streaming, and enables assistants to invoke powerful tool plug-ins through a dynamic orchestration system.
+
+## 🚀 Key Features
+
+* **Multi-Channel Architecture** — Deploy to CLI, web (Quart + SSE), or Redis Pub/Sub simultaneously
+* **Multi-Provider Support** — Seamlessly switch between OpenAI, Azure OpenAI, DeepSeek, Qwen, and GitHub Azure Inference
+* **Dynamic Tool System** — Extensible tool registry with built-in support for CSV/spreadsheet operations, YouTube search, security audits, dynamic forms, and more
+* **Event-Driven Design** — Pub/sub event bus for decoupled, scalable communication
+* **Production Ready** — Structured logging, error handling, session management, and Docker support
+
+## 🤖 AI Provider Support
+
+| Provider | Assistant API | Chat Completions | Notes |
+|----------|---------------|------------------|-------|
+| **OpenAI** | ✅ Full Support | ✅ | Threads, deltas, tool calls, streaming |
+| **Azure OpenAI** | ✅ Full Support | ✅ | Threads, deltas, tool calls, streaming |
+| **DeepSeek** | ❌ Not Supported | ✅ | OpenAI SDK compatible, chat completions only |
+| **Qwen** | ❌ Not Supported | ✅ | OpenAI SDK compatible, chat completions only |
+| **GitHub Azure Inference** | ❌ Not Supported | ✅ | Azure AI SDK, chat completions only |
+
+> **Note:** Assistant API (threads, runs, tool calls) is currently only available for OpenAI and Azure OpenAI. DeepSeek and Qwen use OpenAI SDK compatibility for chat completions, but do not support Assistant API endpoints. If these providers add Assistant API support in the future, code changes would be required to add the appropriate headers and configuration.
 
 ---
 
 ## Table of Contents
 
-1. [Features](#features)  
-2. [Architecture Diagrams](#architecture-diagrams)  
-3. [Architecture](#architecture)  
-4. [Prerequisites](#prerequisites)  
-5. [Installation](#installation)  
-6. [Configuration](#configuration)  
-7. [Usage](#usage)  
+1. [Key Features](#-key-features)  
+2. [AI Provider Support](#-ai-provider-support)  
+3. [Detailed Features](#detailed-features)  
+4. [Architecture Diagrams](#architecture-diagrams)  
+5. [Architecture](#architecture)  
+6. [Prerequisites](#prerequisites)  
+7. [Installation](#installation)  
+8. [Configuration](#configuration)  
+9. [Usage](#usage)  
    * [CLI Chat](#cli-chat)  
    * [Web Chat (Quart + SSE)](#web-chat-quart--sse)  
-8. [Running with Docker](#running-with-docker)  
-9. [Documentation](#documentation)  
-10. [Contributing](#contributing)  
-11. [License](#license)
+10. [Running with Docker](#running-with-docker)  
+11. [Documentation](#documentation)  
+12. [Contributing](#contributing)  
+13. [License](#license)
 
 ---
 
-## Features
+## Detailed Features
 
 ### Multi-Channel Publishing
 
-Chat events can be streamed to:
+Chat events can be streamed to multiple channels simultaneously:
 
-* **CLI** (`CLIChannel`)  
-* **Redis Pub/Sub** (`RedisChannel`)  
-* **SSE Web clients** via Quart (`QuartChannel` + `SSEManager`)
+* **CLI** (`CLIChannel`) — Interactive terminal interface with real-time streaming
+* **Redis Pub/Sub** (`RedisChannel`) — Distributed messaging for microservices
+* **SSE Web clients** via Quart (`QuartChannel` + `SSEManager`) — Real-time browser updates
+
+### Streaming Assistant API
+
+* Thread life-cycle management (create → queue → in-progress → complete)  
+* Event routing via in-memory `EventBus` + `EventDispatcher`  
+* Delta-based message streaming with `MessageDeltaEvent`
+
+### Dynamic RAG & Multi-Agent Tool Orchestration
+
+Toolsmith enables assistants to **invoke dynamic tools via tool calls**, providing a hybrid RAG + Multi-Agent System:
+
+* **Agent coordination & delegation**  
+  * `save_processed_content` / `load_processed_content`  
+  * `initialize_agent` / `communicate_with_assistant`
 
 ---
 
@@ -77,31 +107,8 @@ Visual overview of the FlexiAI Toolsmith architecture and workflows:
 ---
 
 > **📖 For detailed file relationships and workflows, see:**
+> - [`FILE_MAPPING.md`](FILE_MAPPING.md) - Complete file mapping with detailed imports/exports and relationships
 > - [`project_files_relations.md`](project_files_relations.md) - Complete workflow documentation
-> - [`FILE_MAPPING.md`](FILE_MAPPING.md) - High-level file mapping
-> - [`FILE_DETAILED_MAPPING.md`](FILE_DETAILED_MAPPING.md) - Detailed file-by-file documentation
-
----
-
-## AI Provider Support
-
-* **OpenAI & Azure OpenAI** — full Assistant-API (threads, deltas, tool calls)  
-* **DeepSeek & Qwen** — chat-completions via OpenAI SDK (Assistant-API pending)  
-* **GitHub Azure Inference** — chat-completions only  
-
-## Streaming Assistant API
-
-* Thread life-cycle management (create → queue → in-progress → complete)  
-* Event routing via in-memory `EventBus` + `EventDispatcher`  
-* Delta-based message streaming with `MessageDeltaEvent`
-
-## Dynamic RAG & Multi-Agent Tool Orchestration (via Toolsmith)
-
-Toolsmith lets assistants **invoke dynamic tools via tool calls**, giving you a hybrid RAG + MAS system:
-
-* **Agent coordination & delegation**  
-  * `save_processed_content` / `load_processed_content`  
-  * `initialize_agent` / `communicate_with_assistant`
 
 ## Built-in Tool Plug-ins
 
@@ -197,8 +204,7 @@ Toolsmith lets assistants **invoke dynamic tools via tool calls**, giving you a 
 - Tools Manager → Tools Registry → Infrastructure Modules (CSV/Spreadsheet/Security)
 
 For detailed file relationships and workflows, see:
-- [`FILE_MAPPING.md`](FILE_MAPPING.md) - High-level file mapping
-- [`FILE_DETAILED_MAPPING.md`](FILE_DETAILED_MAPPING.md) - Detailed file-by-file documentation
+- [`FILE_MAPPING.md`](FILE_MAPPING.md) - Complete file mapping with detailed imports/exports and relationships
 - [`project_files_relations.md`](project_files_relations.md) - Complete workflow and relations
 
 ---
@@ -308,7 +314,7 @@ For detailed file relationships and workflows, see:
 | `DATABASE_URL` | Database connection string (SQLite default) | Auto-generated |
 | `REDIS_URL` | Redis connection URL (if using Redis channel) | `redis://localhost:6379/0` |
 
-> **Note:** Assistant-API features currently work on OpenAI & Azure OpenAI only. DeepSeek & Qwen will auto-enable once their endpoints support it.
+> **Note:** Assistant-API features (threads, runs, tool calls, streaming) currently work on OpenAI & Azure OpenAI only. DeepSeek and Qwen support chat completions via OpenAI SDK compatibility, but do not support Assistant API endpoints.
 
 > **Tip:** See [`ENV_SETUP.md`](ENV_SETUP.md) for detailed setup instructions.
 
@@ -385,8 +391,7 @@ The web interface will be available at [http://localhost:8000/chat/](http://loca
 
 Comprehensive documentation is available:
 
-* **[`FILE_MAPPING.md`](FILE_MAPPING.md)** - High-level file mapping and module overview
-* **[`FILE_DETAILED_MAPPING.md`](FILE_DETAILED_MAPPING.md)** - Detailed file-by-file documentation with imports/exports
+* **[`FILE_MAPPING.md`](FILE_MAPPING.md)** - Complete file mapping with detailed imports/exports, relationships, and module overview
 * **[`project_files_relations.md`](project_files_relations.md)** - Complete project workflow and file relations
 * **[`ENV_SETUP.md`](ENV_SETUP.md)** - Detailed environment setup guide
 
