@@ -175,3 +175,30 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+FILE_DETAILED_MAPPING.md
+FILE_MAPPING.md
+project_files_relations.md
+agents_experiments/OpenAI_AgentsSDK/advanced_workflows.py
+agents_experiments/OpenAI_AgentsSDK/async_agents.py
+agents_experiments/OpenAI_AgentsSDK/basic_agents_test.py
+agents_experiments/OpenAI_AgentsSDK/guardrails_safety.py
+agents_experiments/OpenAI_AgentsSDK/handoffs_coordination.py
+agents_experiments/OpenAI_AgentsSDK/openai_agents_setup.py
+agents_experiments/OpenAI_AgentsSDK/performance_monitoring.py
+agents_experiments/OpenAI_AgentsSDK/structured_outputs.py
+agents_experiments/OpenAI_AgentsSDK/t001OAI.ipynb
+agents_experiments/OpenAI_AgentsSDK/test_runner.py
+agents_experiments/OpenAI_AgentsSDK/tools_and_functions.py
+agents_experiments/Structured Multi-Agent Workflow/_agent_tools.py
+agents_experiments/Structured Multi-Agent Workflow/_agents.py
+agents_experiments/Structured Multi-Agent Workflow/agent_coordination_layer.py
+agents_experiments/Structured Multi-Agent Workflow/t001.ipynb
+agents_experiments/Structured Multi-Agent Workflow/t002.ipynb
+agents_experiments/Structured Multi-Agent Workflow/t003.ipynb
+agents_experiments/Structured Multi-Agent Workflow/t004.ipynb
+agents_experiments/other_experiments/api_client.py
+agents_experiments/other_experiments/base_agent.py
+agents_experiments/other_experiments/config.py
+agents_experiments/other_experiments/context_manager.py
+agents_experiments/other_experiments/conversation_manager.py
+agents_experiments/other_experiments/test_001.ipynb
