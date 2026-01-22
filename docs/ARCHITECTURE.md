@@ -33,7 +33,7 @@ FlexiAI Toolsmith follows a **layered, modular architecture** with clear separat
                      │
 ┌────────────────────▼────────────────────────────────────┐
 │              Core Handlers                              │
-│  (RunThreadManager, ToolExecutor, EventHandler)        │
+│  (RunThreadManager, EventHandler, ToolExecutor)        │
 └────────────────────┬────────────────────────────────────┘
                      │
 ┌────────────────────▼────────────────────────────────────┐
@@ -101,6 +101,7 @@ Controllers orchestrate the interaction between users and the AI assistant:
 - Routes tool invocations to appropriate infrastructure
 - Validates tool parameters
 - Returns structured results
+- **Note:** ToolExecutor is invoked by EventHandler when tool calls are required during `_handle_requires_action`.
 
 **Interface Contract:**
 ```python
@@ -151,7 +152,7 @@ Controllers orchestrate the interaction between users and the AI assistant:
 
 ## Event-Oriented Execution Pipeline
 
-FlexiAI Toolsmith uses an **event-oriented pipeline** (not a traditional event-driven architecture) for structured communication between components.
+FlexiAI Toolsmith uses an **event-oriented pipeline** (not a traditional event-driven architecture) for structured communication between components. This pipeline runs within a single process and does not require an external message broker.
 
 ### Event Flow
 
@@ -160,16 +161,18 @@ User Input
     ↓
 Controller → Creates MessageEvent
     ↓
-EventHandler → Publishes to EventBus
+EventHandler → Routes events through internal dispatching (EventDispatcher / MultiChannelPublisher)
     ↓
 RunThreadManager → Processes with Assistant API
     ↓
-ToolExecutor → Executes tool calls (if needed)
+ToolExecutor → Executes tool calls (if needed, invoked by EventHandler)
     ↓
-EventHandler → Publishes ResponseEvent
+EventHandler → Publishes ResponseEvent to channels
     ↓
 Channel → Streams to User (CLI/Web/Redis)
 ```
+
+**Note:** EventBus exists as an internal utility, but primary event routing is handled by EventHandler and MultiChannelPublisher.
 
 ### Event Types
 
@@ -187,17 +190,16 @@ Channel → Streams to User (CLI/Web/Redis)
 
 ### Event Bus
 
-The event bus provides:
-- Decoupled component communication
-- Multiple channel subscriptions
-- Event filtering and transformation
-- Streaming support for real-time updates
+The EventBus is an internal utility for component communication. Primary event routing is handled by:
+- **EventHandler** - Orchestrates event processing and tool calls
+- **EventDispatcher** - Routes events to appropriate handlers within EventHandler
+- **MultiChannelPublisher** - Publishes events to configured output channels (CLI/Quart/Redis)
 
 ---
 
 ## Channel System
 
-Channels are the output mechanisms for assistant responses:
+Channels are terminal consumers of events and do not participate in execution or routing logic. They serve as output mechanisms for assistant responses:
 
 ### CLI Channel (`cli_channel.py`)
 - Terminal-based output
