@@ -1,7 +1,7 @@
 <!-- FILE: templates/index.html -->
 
 {% extends "base.html" %}
-{% block title %}Home — FlexiAI Toolsmith (beta){% endblock %}
+{% block title %}Home — FlexiAI Toolsmith{% endblock %}
 
 {% block content %}
   <!-- Hero Section -->
@@ -9,13 +9,13 @@
     <div class="hero-content">
       <h1>FlexiAI&nbsp;Toolsmith</h1>
       <p>
-        A practical framework for building and testing AI-powered chat assistants.<br>
-        Works from the terminal or a web UI and connects to OpenAI, Azure&nbsp;OpenAI,
-        DeepSeek, and&nbsp;Qwen.
+        A Python framework for building AI assistants with structured tool execution.<br>
+        Supports CLI and web interfaces with real-time streaming. Compatible with OpenAI, Azure&nbsp;OpenAI,
+        DeepSeek, Qwen, and GitHub Azure Inference.
       </p>
 
       <a href="{{ url_for('chat.render_chat_page') }}" class="cta-button">
-        Open the web chat
+        Start Chat
       </a>
     </div>
 
@@ -29,25 +29,26 @@
   <!-- Features Overview -->
   <section class="features">
     <div class="feature">
-      <h3>Multi-channel routing</h3>
+      <h3>Multi-Channel Architecture</h3>
       <p>
-        Fan out every chat update to the CLI console, a Redis&nbsp;Pub/Sub channel,
-        and the Quart-based web UI (SSE)—whichever channels you enable.
+        Publish events to multiple output channels: CLI console, Redis Pub/Sub, or Quart web UI with Server-Sent Events (SSE).
+        Channels are configured via environment variables.
       </p>
     </div>
 
     <div class="feature">
-      <h3>Streaming support</h3>
-      <p>See partial responses as they’re generated in both the terminal and the browser.</p>
+      <h3>Real-Time Streaming</h3>
+      <p>
+        Stream assistant responses incrementally using OpenAI Assistant API streaming. Supports both CLI and web interfaces
+        with Server-Sent Events for browser-based real-time updates.
+      </p>
     </div>
 
     <div class="feature">
-      <h3>Tool integrations</h3>
+      <h3>Built-In Tools</h3>
       <p>
-        Call built-in helpers for retrieval-augmented answers, CSV / spreadsheet tasks,
-        YouTube search&nbsp;&amp; embeds, subscriber or billing look-ups, and
-        basic security audits.
-        <em>(OCR and dynamic multi-agent support are on the roadmap.)</em>
+        Includes tools for CSV operations, spreadsheet processing (Excel/OpenPyXL), context storage, YouTube search,
+        subscriber management, and security audit operations. Tools are invoked via Assistant API tool calls.
       </p>
     </div>
   </section>
