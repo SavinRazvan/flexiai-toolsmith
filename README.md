@@ -156,6 +156,12 @@ ACTIVE_CHANNELS=cli,quart
 python chat.py
 ```
 
+**Example CLI Interface:**
+
+<p align="center">
+  <img src="static/images/demos/Security%20Advisor%201%20(CLI%20Chat).png" alt="CLI Chat Example - Security Advisor" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+</p>
+
 **Quick Test:**
 ```bash
 python chat.py
@@ -181,6 +187,12 @@ Access:
 
 * `http://127.0.0.1:8000/` - Landing page
 * `http://127.0.0.1:8000/chat/` - Chat interface
+
+**Example Web Interface:**
+
+<p align="center">
+  <img src="static/images/demos/FlexiAI%20-%20WebChat%20-%20Security%201.png" alt="Web Chat Example - Security Assistant" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+</p>
 
 **Quick Test:**
 1. Start the server: `hypercorn app:app --bind 127.0.0.1:8000 --workers 1`

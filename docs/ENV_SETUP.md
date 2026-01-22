@@ -240,9 +240,31 @@ source .venv/bin/activate  # or conda activate .conda_flexiai
 - For production, use strong `SECRET_KEY` values
 - Redis is optional unless you're using the Redis channel
 
+## Verification
+
+After completing setup, you should be able to run the application. Here's what to expect:
+
+### CLI Interface
+
+When you run `python chat.py`, you should see an interactive CLI chat interface:
+
+<p align="center">
+  <img src="../static/images/demos/Security%20Advisor%202%20(CLI%20Chat).png" alt="CLI Chat Interface Example" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+</p>
+
+### Web Interface
+
+When you start the web server and navigate to `http://127.0.0.1:8000/chat/`, you should see:
+
+<p align="center">
+  <img src="../static/images/demos/FlexiAI%20-%20WebChat%20-%20Security%202.png" alt="Web Chat Interface Example" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+</p>
+
+Both interfaces support real-time streaming responses and tool execution.
+
 ## Next Steps
 
 1. ✅ Environment set up
 2. ✅ `.env` configured
 3. 🚀 Run the application
-4. 📖 Read the main [README.md](README.md) for usage details
+4. 📖 Read the main [README.md](../README.md) for usage details
