@@ -1,7 +1,7 @@
 # FlexiAI Toolsmith
 
-[![Python >=3.12](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python >=3.12](https://img.shields.io/badge/python-3.12+-darkblue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-darkgreen.svg)](https://opensource.org/licenses/MIT)
 
 **FlexiAI Toolsmith** is a modular Python framework for building applied AI assistants that combine large language models with structured context, backend tools, and external services.
 
@@ -64,7 +64,7 @@ The framework also includes **experimental support for multi-agent coordination*
   <img src="static/images/diagrams/FlexiAI%20Message%20Workflow-2026-01-22-113746.png" alt="FlexiAI Message Workflow Diagram" style="max-width: 100%; height: auto;">
 </p>
 
-**Message workflow** showing how user messages flow through controllers, event handlers, assistant API, and tool execution, with real-time streaming responses back to users via CLI or web interfaces.
+**High-level message workflow** showing how user input flows through controllers, assistant execution, optional tool calls, and real-time streaming back to the user.
 
 For detailed architecture documentation, execution workflows, and additional diagrams, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
@@ -205,14 +205,29 @@ Access:
 
 ## Documentation
 
-* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – System architecture, components, and design
-* [docs/WORKFLOW.md](docs/WORKFLOW.md) – Execution workflows and data flow
-* [docs/TOOLING.md](docs/TOOLING.md) – Tool capabilities and usage
-* [docs/ENV_SETUP.md](docs/ENV_SETUP.md) – Environment configuration guide
-* [SECURITY.md](SECURITY.md) – Security guidelines and safe usage practices
-* [CONTRIBUTING.md](CONTRIBUTING.md) – Development guidelines and contribution process
-* [TESTING.md](TESTING.md) – Testing guide and mocking strategies
-* [docs/FILE_MAPPING.md](docs/FILE_MAPPING.md) – Internal file reference (for maintainers)
+### Documentation Map
+
+**Getting Started:**
+- [docs/ENV_SETUP.md](docs/ENV_SETUP.md) – Environment setup and configuration
+- [SECURITY.md](SECURITY.md) – Security guidelines and safe usage practices
+
+**Understanding the System:**
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – System structure, components, and responsibilities (what exists & who owns what)
+- [docs/WORKFLOW.md](docs/WORKFLOW.md) – Runtime behavior and execution paths (what happens when something runs)
+- [docs/TOOLING.md](docs/TOOLING.md) – Tool capabilities, safety, and contracts (what tools can do & how dangerous they are)
+
+**Development:**
+- [CONTRIBUTING.md](CONTRIBUTING.md) – Development guidelines and contribution process
+- [TESTING.md](TESTING.md) – Testing guide and mocking strategies
+- [docs/FILE_MAPPING.md](docs/FILE_MAPPING.md) – Internal file reference (for maintainers)
+
+### Quick Reference
+
+| Document | Purpose | When to Read |
+|----------|---------|--------------|
+| **ARCHITECTURE.md** | Structural model & component responsibilities | Understanding system design, component boundaries |
+| **WORKFLOW.md** | Runtime behavior & execution sequences | Tracing execution flow, debugging, understanding startup |
+| **TOOLING.md** | Tool capabilities, inputs/outputs, security | Using tools, understanding tool behavior, security concerns |
 
 ---
 
