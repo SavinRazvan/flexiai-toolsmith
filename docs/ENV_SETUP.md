@@ -6,7 +6,14 @@ This guide will help you set up the development environment for FlexiAI Toolsmit
 
 - **Python 3.12+** (Python 3.13 is also supported)
 - **Conda** (Miniconda/Anaconda) - *optional but recommended*
+- **Tesseract OCR** - *optional, only needed for OCR features*
+  - Ubuntu/Debian: `sudo apt-get install tesseract-ocr`
+  - macOS: `brew install tesseract`
+  - Windows: Download from [GitHub](https://github.com/UB-Mannheim/tesseract/wiki)
 - **Redis** - *optional, only needed if using Redis channel*
+  - Ubuntu/Debian: `sudo apt-get install redis-server`
+  - macOS: `brew install redis`
+  - Or use Docker: `docker run -d -p 6379:6379 redis`
 
 ## Quick Setup
 
@@ -136,7 +143,14 @@ python --version
 ### Verify dependencies
 
 ```bash
-python -c "import quart; import openai; print('✓ Dependencies OK')"
+# Basic dependencies
+python -c "import quart; import openai; import pydantic_settings; print('✓ Core dependencies OK')"
+
+# Optional: Verify hypercorn (for web server)
+python -c "import hypercorn; print('✓ Hypercorn OK')"
+
+# Optional: Verify OCR support (if tesseract is installed)
+python -c "import pytesseract; print('✓ OCR support available')" 2>/dev/null || echo "⚠️  OCR not available (tesseract not installed)"
 ```
 
 ## Running the Application
@@ -170,14 +184,35 @@ conda install python=3.12
 **Solution:** Reinstall requirements:
 
 ```bash
+# Make sure venv is activated
+source .venv/bin/activate  # or conda activate .conda_flexiai
+
+# Upgrade pip first
+pip install --upgrade pip
+
+# Install all dependencies
 pip install -r requirements.txt
 ```
+
+**Note:** If you're using Conda, dependencies are installed automatically with `conda env create -f environment.yml`.
 
 ### Issue: Redis connection error
 
 **Solution:** 
-- Install Redis: `sudo apt-get install redis-server` (Linux) or use Docker
+- Install Redis: 
+  - Linux: `sudo apt-get install redis-server`
+  - macOS: `brew install redis`
+  - Docker: `docker run -d -p 6379:6379 redis`
 - Or remove `redis` from `ACTIVE_CHANNELS` in `.env`
+
+### Issue: Tesseract/OCR errors
+
+**Solution:**
+- Install Tesseract OCR:
+  - Ubuntu/Debian: `sudo apt-get install tesseract-ocr`
+  - macOS: `brew install tesseract`
+  - Windows: Download from [GitHub](https://github.com/UB-Mannheim/tesseract/wiki)
+- OCR features are optional and only needed if you use OCR tools
 
 ### Issue: Module not found errors
 

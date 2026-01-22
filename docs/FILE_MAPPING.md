@@ -1,6 +1,8 @@
 # FlexiAI Toolsmith - Complete File Mapping & Documentation
 
-This document provides comprehensive mapping of all files in the project, including their purposes, dependencies, relationships, imports, exports, and detailed information.
+**Internal Reference Document** – This document provides comprehensive mapping of all files in the project, including their purposes, dependencies, relationships, imports, exports, and detailed information.
+
+> **Note:** This is a detailed internal reference for maintainers. For user-facing documentation, see [README.md](../README.md), [ARCHITECTURE.md](ARCHITECTURE.md), and [WORKFLOW.md](WORKFLOW.md).
 
 ## Table of Contents
 
@@ -1305,11 +1307,12 @@ AI Assistant requests tool
 - `Dockerfile` - Docker configuration
 
 ### Documentation Files
-- `README.md` - Main documentation
-- `ENV_SETUP.md` - Environment setup guide
-- `FILE_MAPPING.md` - This file
-- `project_files_relations.md` - Complete workflow documentation
-- `TODO.md` - Project todos
+- `README.md` - Main documentation (root)
+- `docs/ARCHITECTURE.md` - System architecture and design
+- `docs/WORKFLOW.md` - Execution workflows and data flow
+- `docs/TOOLING.md` - Tool capabilities and usage
+- `docs/ENV_SETUP.md` - Environment setup guide
+- `docs/FILE_MAPPING.md` - This file (detailed internal reference)
 
 ---
 
