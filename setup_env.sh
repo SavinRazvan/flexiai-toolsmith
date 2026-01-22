@@ -52,12 +52,26 @@ else
     python3 -m venv .venv
     echo "✅ Virtual environment created!"
     echo ""
-    echo "To activate the environment, run:"
+    echo "📥 Installing Python dependencies..."
+    # Activate venv and install dependencies
+    if [ -f .venv/bin/activate ]; then
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        echo "✅ Dependencies installed!"
+    elif [ -f .venv/Scripts/activate ]; then
+        .venv/Scripts/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        echo "✅ Dependencies installed!"
+    else
+        echo "⚠️  Could not activate venv automatically. Please activate manually and run:"
+        echo "  pip install -r requirements.txt"
+    fi
+    echo ""
+    echo "To activate the environment later, run:"
     echo "  source .venv/bin/activate  # On Linux/Mac"
     echo "  .venv\\Scripts\\activate     # On Windows"
-    echo ""
-    echo "Then install dependencies:"
-    echo "  pip install -r requirements.txt"
 fi
 
 # Create .env file if it doesn't exist
@@ -77,14 +91,57 @@ else
     echo "✓ .env file already exists"
 fi
 
+# Check for system dependencies
+echo ""
+echo "🔍 Checking system dependencies..."
+MISSING_DEPS=()
+
+# Check for Tesseract (needed for OCR features)
+if ! command -v tesseract &> /dev/null; then
+    MISSING_DEPS+=("tesseract")
+fi
+
+# Check for Redis (optional, only if using Redis channel)
+if ! command -v redis-server &> /dev/null && ! command -v redis-cli &> /dev/null; then
+    echo "  ⚠️  Redis not found (optional - only needed if using Redis channel)"
+else
+    echo "  ✓ Redis found"
+fi
+
+if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
+    echo ""
+    echo "⚠️  Optional system dependencies not found:"
+    for dep in "${MISSING_DEPS[@]}"; do
+        echo "  - $dep"
+    done
+    echo ""
+    echo "Install instructions:"
+    if [[ " ${MISSING_DEPS[@]} " =~ " tesseract " ]]; then
+        echo "  Tesseract (for OCR):"
+        echo "    Ubuntu/Debian: sudo apt-get install tesseract-ocr"
+        echo "    macOS: brew install tesseract"
+        echo "    Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki"
+    fi
+    echo ""
+fi
+
 echo ""
 echo "======================================"
 echo "✅ Setup complete!"
 echo ""
 echo "Next steps:"
-echo "1. Activate your environment (see commands above)"
+if [ "$USE_CONDA" = false ]; then
+    echo "1. Activate your environment:"
+    echo "   source .venv/bin/activate  # On Linux/Mac"
+    echo "   .venv\\Scripts\\activate     # On Windows"
+else
+    echo "1. Activate your environment:"
+    echo "   conda activate .conda_flexiai"
+fi
 echo "2. Edit .env file with your API keys and settings"
-echo "3. Run the application:"
+echo "3. Verify installation:"
+echo "   python -c \"import quart; import openai; import pydantic_settings; print('✓ Dependencies OK')\""
+echo "4. Run the application:"
 echo "   - CLI: python chat.py"
 echo "   - Web: hypercorn app:app --bind 127.0.0.1:8000"
 echo ""

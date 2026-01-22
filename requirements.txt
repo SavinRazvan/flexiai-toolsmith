@@ -98,7 +98,9 @@ httplib2==0.22.0
 httpx==0.28.1
     # via openai
 hypercorn==0.17.3
-    # via quart
+    # via
+    #   -r requirements.in
+    #   quart
 hyperframe==6.1.0
     # via h2
 idna==3.10

@@ -17,6 +17,7 @@ psutil==7.0.0
 pydantic-settings==2.9.1
 pytesseract==0.3.13
 quart==0.20.0
+hypercorn==0.17.3
 redis==6.1.0
 ruamel.yaml.clib==0.2.12
 ruamel.yaml==0.18.10
