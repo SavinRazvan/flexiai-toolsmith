@@ -1,5 +1,8 @@
 # FlexiAI Toolsmith
 
+[![Python >=3.12](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **FlexiAI Toolsmith** is a modular Python framework for building applied AI assistants that combine large language models with structured context, backend tools, and external services.
 
 The framework focuses on **orchestration, extensibility, and practical use cases**, enabling AI systems to move beyond generic chat and perform concrete tasks such as data processing, automation workflows, and system checks. It supports both CLI and web-based interaction with real-time streaming and a pluggable tool architecture.
@@ -19,7 +22,7 @@ The project emphasizes clarity of architecture, modular design, and real-world u
 * **Tool-Driven AI** – Assistants invoke structured tools via explicit tool calls instead of relying on free-form responses.
 * **Context-Aware Workflows** – Structured context is injected into assistant interactions to ensure grounded behavior.
 * **Multi-Channel Interaction** – CLI and web interfaces with real-time streaming via Server-Sent Events (SSE).
-* **Event-Driven Design** – Pub/sub-style event flow for decoupled, maintainable components.
+* **Event-Oriented Pipeline** – Structured event flow for streaming, tool calls, and output routing. Components publish/subscribe to internal events; not a full message-broker-based event-driven system.
 * **Provider Abstraction** – Unified interface for multiple LLM providers where supported.
 
 ---
@@ -28,7 +31,7 @@ The project emphasizes clarity of architecture, modular design, and real-world u
 
 FlexiAI Toolsmith supports multiple LLM providers through a unified interface.
 
-Advanced Assistant API features (threads, runs, tool calls, streaming) are currently available for **OpenAI** and **Azure OpenAI**. Other providers are supported via chat-completions compatibility where applicable.
+Advanced Assistant API features (threads, runs, tool calls, streaming) are currently available for **OpenAI** and **Azure OpenAI**. Assistant API support enables structured tool calls, streaming execution, and deterministic workflows. Other providers are supported via chat-completions compatibility where applicable.
 
 | Provider               | Assistant API | Chat Completions | Notes                          |
 | ---------------------- | ------------- | ---------------- | ------------------------------ |
@@ -55,68 +58,29 @@ The framework also includes **experimental support for multi-agent coordination*
 
 ---
 
-## Architecture Diagrams
-
-Visual overview of the FlexiAI Toolsmith architecture and workflows.
-
-### 1. High-Level Architecture
+## Architecture Overview
 
 <p align="center">
-  <img src="static/images/diagrams/DIAGRAM%201%20%E2%80%94%20High-Level%20Architecture-2026-01-21-201950.png" alt="High-Level Architecture Diagram" style="max-width: 100%; height: auto;">
+  <img src="static/images/diagrams/FlexiAI%20Message%20Workflow-2026-01-22-113746.png" alt="FlexiAI Message Workflow Diagram" style="max-width: 100%; height: auto;">
 </p>
 
-**Description:** System architecture showing entry points, controllers, core handlers, event system, channels, and tool infrastructure. Illustrates how data flows through the framework.
+**Message workflow** showing how user messages flow through controllers, event handlers, assistant API, and tool execution, with real-time streaming responses back to users via CLI or web interfaces.
+
+For detailed architecture documentation, execution workflows, and additional diagrams, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
 ---
 
-### 2. Web Request Lifecycle
+## Built-in Tooling
 
-<p align="center">
-  <img src="static/images/diagrams/DIAGRAM%202%20%E2%80%94%20Web%20Request%20Lifecycle-2026-01-21-201839.png" alt="Web Request Lifecycle Diagram" style="max-width: 100%; height: auto;">
-</p>
+FlexiAI Toolsmith includes built-in tooling for:
 
-**Description:** End-to-end flow of a web request from browser interaction through Quart controllers, assistant execution, tool invocation (if required), and SSE streaming back to the client.
+* **Data Processing** – CSV and spreadsheet operations (Excel/OpenPyXL)
+* **Business Workflows** – Subscriber management, customer service automation
+* **Security Analysis** – Network reconnaissance, process detection, port scanning, system updates
+* **External Integration** – YouTube search, external API helpers
+* **Experimental** – Multi-agent coordination, dynamic web forms, OCR utilities
 
----
-
-### 3. Tool Execution Flow
-
-<p align="center">
-  <img src="static/images/diagrams/DIAGRAM%203%20%E2%80%94%20Tool%20Execution%20Flow-2026-01-21-201759.png" alt="Tool Execution Flow Diagram" style="max-width: 100%; height: auto;">
-</p>
-
-**Description:** Workflow showing how tool calls are routed through the tool registry, executed by infrastructure modules, and returned to the assistant in a structured form.
-
----
-
-## Built-in Tool Modules
-
-### Core Capabilities
-
-* **Context Storage** – Save and retrieve processed context across sessions.
-* **Agent Coordination (Experimental)** – Controlled assistant communication and delegation.
-* **Search Utilities** – External lookup helpers (e.g. YouTube search).
-* **Product Filtering** – Structured data filtering utilities.
-
-### Data Management
-
-* **CSV Operations** – Create, read, update, validate, transform, and filter CSV data.
-* **Spreadsheet Operations** – Excel/OpenPyXL-based tooling:
-
-  * File and sheet management
-  * Data entry and retrieval
-  * Analysis, formulas, formatting
-  * Validation, transformation, and chart generation
-
-### Business-Oriented Tools
-
-* **Subscriber Management** – Identification, billing lookup, and service handling workflows.
-* **Security Analysis Tools** – Structured configuration checks and inspection routines executed through controlled workflows.
-
-### Experimental
-
-* **Dynamic Web Forms** – Generate interactive forms inside the web chat UI; submissions are persisted as structured data.
-* **OCR Utilities** – Experimental OCR helpers (not yet integrated).
+See [docs/TOOLING.md](docs/TOOLING.md) for complete tool documentation and capabilities.
 
 ---
 
@@ -153,7 +117,9 @@ Visual overview of the FlexiAI Toolsmith architecture and workflows.
 
 * Python 3.12+
 * Conda or `pip` + `venv`
-* Redis (optional, only if enabled)
+* **Optional system dependencies:**
+  * Tesseract OCR (for OCR features): `sudo apt-get install tesseract-ocr` (Linux) or `brew install tesseract` (macOS)
+  * Redis (only if using Redis channel): `sudo apt-get install redis-server` (Linux) or `brew install redis` (macOS)
 * OpenAI or Azure OpenAI assistant ID
 
 ---
@@ -168,6 +134,18 @@ cd flexiai-toolsmith
 
 Copy `.env.template` to `.env` and configure required variables.
 
+**Minimal `.env` example:**
+
+```env
+CREDENTIAL_TYPE=openai
+OPENAI_API_KEY=sk-your-api-key-here
+ASSISTANT_ID=your_assistant_id_here
+USER_ID=default_user
+ACTIVE_CHANNELS=cli,quart
+```
+
+> **Note:** See [docs/ENV_SETUP.md](docs/ENV_SETUP.md) for complete configuration options and provider-specific settings.
+
 ---
 
 ## Usage
@@ -178,6 +156,21 @@ Copy `.env.template` to `.env` and configure required variables.
 python chat.py
 ```
 
+**Quick Test:**
+```bash
+python chat.py
+# Expected output:
+# ======================================
+#          FlexiAI Chat Session         
+# ======================================
+# Type '/bye' or '/exit' to quit the conversation.
+#
+# 👤 You: hello
+# 🌺 Assistant: Hello! How can I assist you today?
+```
+
+> **Troubleshooting:** If you see errors, verify `ASSISTANT_ID` and `OPENAI_API_KEY` are set correctly in your `.env` file.
+
 ### Web (Quart + SSE)
 
 ```bash
@@ -186,22 +179,34 @@ hypercorn app:app --bind 127.0.0.1:8000 --workers 1
 
 Access:
 
-* `http://127.0.0.1:8000/`
-* `http://127.0.0.1:8000/chat/`
+* `http://127.0.0.1:8000/` - Landing page
+* `http://127.0.0.1:8000/chat/` - Chat interface
+
+**Quick Test:**
+1. Start the server: `hypercorn app:app --bind 127.0.0.1:8000 --workers 1`
+2. Open `http://127.0.0.1:8000/chat/` in your browser
+3. Send a message and observe real-time streaming responses (text should appear incrementally)
+
+> **Troubleshooting:** If no streaming appears, verify `ASSISTANT_ID` and `OPENAI_API_KEY` are set correctly in your `.env` file.
 
 ---
 
 ## Documentation
 
-* `FILE_MAPPING.md` – Detailed file and dependency mapping
-* `project_files_relations.md` – Workflow and execution paths
-* `ENV_SETUP.md` – Environment configuration guide
+* [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – System architecture, components, and design
+* [docs/WORKFLOW.md](docs/WORKFLOW.md) – Execution workflows and data flow
+* [docs/TOOLING.md](docs/TOOLING.md) – Tool capabilities and usage
+* [docs/ENV_SETUP.md](docs/ENV_SETUP.md) – Environment configuration guide
+* [SECURITY.md](SECURITY.md) – Security guidelines and safe usage practices
+* [CONTRIBUTING.md](CONTRIBUTING.md) – Development guidelines and contribution process
+* [TESTING.md](TESTING.md) – Testing guide and mocking strategies
+* [docs/FILE_MAPPING.md](docs/FILE_MAPPING.md) – Internal file reference (for maintainers)
 
 ---
 
 ## Contributing
 
-Contributions are welcome. Please review the documentation before submitting changes and follow existing architectural patterns.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines, code style, and submission process.
 
 ---
 
