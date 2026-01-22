@@ -1,7 +1,7 @@
 **Other Settings:**
 - Response format: `text`
-- Temperature: `1.00`
-- Top P: `1.00`
+- Temperature: `0.50`
+- Top P: `0.80`
 
 
 **Functions:**
